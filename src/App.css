@@ -1,0 +1,1058 @@
+Body {
+  padding: 0;
+  margin: 0;
+  background-color: rgb(243, 242, 239);
+}
+
+.container {
+  min-width: 960px;
+  max-width: 1400px;
+}
+.userOnly {
+  display: none !important;
+}
+/* Main Profile Block Styling */
+
+#profile-main.card {
+  border-radius: 0.6rem;
+}
+
+#profile-main .profile-background-container {
+  height: 250px;
+  overflow: hidden;
+  border-radius: 0.6rem 0.6rem 0rem 0rem;
+}
+
+#profile-main .profile-background-picture {
+  height: 250px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+#profile-main .profile-photo {
+  height: 200px;
+  width: 200px;
+  border-radius: 100px;
+  margin-top: -160px;
+  margin-bottom: 20px;
+  border: 6px solid #fff;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  position: relative;
+}
+
+#profile-main .profile-right {
+  padding-top: 1px;
+}
+
+#profile-main .profile-button-container {
+  height: 40px;
+}
+
+#profile-main button {
+  width: 120px;
+}
+
+#profile-main .btn-primary {
+  background-color: rgb(10, 102, 194);
+}
+
+#profile-main .btn-primary:hover {
+  background-color: rgb(7, 91, 175);
+  border: 2px solid rgb(7, 91, 175);
+}
+
+#profile-main .btn-outline-primary,
+#navbar .btn-outline-primary,
+#experience-main-container .btn-outline-primary {
+  border: 1px solid rgb(10, 102, 194);
+  color: rgb(7, 91, 175);
+}
+
+#profile-main .btn-outline-primary:hover,
+#navbar .btn-outline-primary:hover,
+#experience-main-container .btn-outline-primary:hover {
+  background-color: rgba(10, 102, 194, 0.13);
+  color: #007bff;
+  border: 2px solid rgb(10, 102, 194);
+}
+
+#profile-main .btn-outline-secondary,
+#experience-main-container .btn-outline-secondary {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+#profile-main .btn-outline-secondary:hover,
+#experience-main-container .btn-outline-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+}
+
+#profile-main #latest-experience,
+#profile-main #latest-education {
+  width: 50%;
+}
+
+#profile-main .latest-experience-image,
+#profile-main .latest-education-image {
+  height: 32px;
+  width: 32px;
+  background-color: #000;
+}
+
+#profile-main #latest-experience a,
+#profile-main #latest-education a {
+  color: #000;
+  word-break: break-all;
+}
+
+#profile-main #latest-experience a:hover,
+#profile-main #latest-education a:hover {
+  color: rgb(10, 102, 194);
+}
+
+#profile-main .profile-more-menu {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px 0px;
+  text-align: left;
+  position: absolute;
+  top: 316px;
+  right: -130px;
+  z-index: 10;
+}
+
+#profile-main .profile-more-menu ul {
+  padding: 6px 0px;
+  margin-bottom: 0;
+}
+
+#profile-main .profile-more-menu ul li {
+  list-style-type: none;
+  width: 100%;
+  padding: 14px 20px;
+  cursor: pointer;
+}
+
+#profile-main .profile-more-menu ul li a {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 1.1rem;
+  font-weight: lighter;
+}
+
+#profile-main .profile-more-menu ul li:hover a {
+  color: rgb(10, 102, 194);
+  text-decoration: none;
+}
+
+#profile-main .profile-more-menu ul li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#profile-main .fa-briefcase,
+#profile-main .fa-graduation-cap {
+  font-size: 1.4rem;
+  width: 22.4px;
+}
+
+#profile-main .profile-picture-edit-btn {
+  height: 36px;
+  width: 36px;
+  border-radius: 22px;
+  background-color: #fff;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35);
+  position: absolute;
+  z-index: 10;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+#profile-main .profile-picture-edit-btn:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+#profile-main .profile-picture-edit-btn .fa-pen {
+  font-size: 1.2rem;
+}
+
+#profile-main .profile-picture-edit-btn:hover {
+  color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+#profile-main .profile-picture-edit-btn:focus,
+#profile-main .profile-picture-edit-btn:active {
+  transform: scale(0.95);
+}
+
+#profile-main .profile-picture-upload-container {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  width: 70%;
+  position: absolute;
+  z-index: 999;
+  top: 30px;
+  right: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.125);
+  padding: 20px;
+}
+
+#profile-main .fileContainer .chooseFileButton {
+  width: 150px;
+}
+
+#contact-info-popup {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.contact-popup-title {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 16px;
+}
+
+.popup-wrapper {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  width: 400px;
+  margin-top: 10%;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px 0px;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+}
+
+.contact-info-wrapper i {
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.fa-times {
+  font-size: 1.4rem;
+  color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.fa-times:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.fade-in {
+  -webkit-animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  animation: fade-in 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2020-11-30 15:31:40
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation fade-in
+ * ----------------------------------------
+ */
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Highlights block styling */
+
+#highlights-container {
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #fff;
+  padding: 24px;
+}
+
+#highlights-container .highlight-image {
+  height: 56px;
+  width: 56px;
+  background-color: rgb(243, 242, 239);
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.068);
+}
+
+#highlights-container .highlight-image i {
+  color: rgb(218, 218, 218);
+  font-size: 2.8rem;
+}
+
+/* About block styling */
+
+#about-container {
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #fff;
+  padding: 24px;
+}
+
+/* Yazid piece styling */
+
+.expImgPlace {
+  height: 56px;
+  width: 56px;
+  border-radius: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.068);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.reactPlayer-conatin {
+  background-color: white;
+}
+.banner-learning-contain {
+  background-image: linear-gradient(rgb(27, 34, 143), rgb(8, 74, 112));
+  height: 200px;
+  width: 100%;
+}
+
+.img-card-jobs {
+  height: 56px;
+  width: 56px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 6px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.jobs-container {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.6rem;
+}
+
+.jobs-link {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.more-dropdown {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.6);
+  border: none;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.more-dropdown:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.more-dropdown:focus {
+  background-color: rgba(0, 0, 0, 0.075) !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.more-dropdown:active {
+  background-color: rgba(0, 0, 0, 0.075) !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+#jobs-main-container .btn-secondary:not(:disabled):not(.disabled).active,
+#jobs-main-container .btn-secondary:not(:disabled):not(.disabled):active,
+#jobs-main-container .show > .btn-secondary.dropdown-toggle .post-btn-container {
+  background-color: rgba(0, 0, 0, 0.075) !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+#jobs-main-container .show-applicant-container {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.125);
+  top: 40px;
+  left: 90px;
+  right: 0;
+  width: 120%;
+  padding: 14px;
+  z-index: 999;
+}
+
+#jobs-main-container .applicant-picture {
+  height: 32px;
+  width: 32px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 16px;
+}
+
+.post-job-btn {
+  border-radius: 32px !important;
+  padding: 6px 20px;
+  border: 1px solid rgb(10, 102, 194);
+  color: rgb(10, 102, 194);
+  font-weight: bold;
+}
+
+.post-job-btn:hover {
+  border: 3px solid rgb(10, 102, 194);
+  background-color: rgba(112, 181, 249, 0.15);
+}
+
+#jobs-main-container a.no-underline {
+  text-decoration: none;
+}
+
+#jobs-main-container .search-input {
+  padding-left: 36px;
+  position: relative;
+  border: none;
+  border-radius: 4px;
+}
+
+#jobs-main-container .search-input-container {
+  position: relative;
+}
+
+#jobs-main-container .search-input-container .fa-search {
+  position: absolute;
+  z-index: 5;
+  top: 12px;
+  left: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+#jobs-main-container .search-input-container .fa-map-marker-alt {
+  position: absolute;
+  z-index: 5;
+  top: 12px;
+  left: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+#jobs-main-container .search-jobs-container {
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: rgb(220, 230, 241);
+  padding: 30px 40px;
+}
+
+#jobs-main-container .search-btn {
+  background-color: rgb(10, 102, 194);
+  padding: 6px 40px;
+  border-radius: 32px;
+  border: 1px solid rgb(10, 102, 194);
+  font-weight: bold;
+}
+
+#jobs-main-container .search-btn:hover {
+  background-color: rgb(0, 65, 130);
+}
+
+#jobs-main-container .recommended-container {
+  border-radius: 0.6rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 20px;
+}
+
+#jobs-main-container .job-card {
+  border-radius: 0.6rem;
+  height: 268px;
+}
+
+#jobs-main-container .job-card-footer {
+  border: none;
+  background-color: transparent;
+  position: relative;
+}
+
+#jobs-main-container .job-card-footer:before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 20px;
+  right: 0;
+  height: 5px;
+  width: 12%;
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#jobs-main-container .job-card-title {
+  font-size: 1rem;
+}
+#jobs-main-container .job-card-subtitle {
+  font-size: 0.9rem;
+}
+
+#jobs-main-container .suggested-jobs-searches {
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #fff;
+  padding: 20px;
+}
+
+#jobs-main-container .suggested-buttons-container {
+  height: 40px;
+}
+
+#jobs-main-container .suggested-btn {
+  border-radius: 30px;
+  min-width: 60px;
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: bold;
+  padding: 2px 14px;
+}
+
+#jobs-main-container .btn-small {
+  width: 60px;
+}
+
+#jobs-main-container .btn-reg {
+  width: 100px;
+}
+
+#jobs-main-container .btn-large {
+  width: 180px;
+}
+
+#jobs-main-container .suggested-btn:hover {
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.brdr-right {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.imgPlace {
+  height: 56px;
+  width: 56px;
+  border-radius: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.068);
+  background-color: rgb(226, 226, 226);
+}
+
+.experience-contain {
+  background-color: white;
+  border-radius: 0.6rem 0.6rem 0rem 0rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.education-contain {
+  background-color: white;
+  border-radius: 0rem 0rem 0.6rem 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.skills-contain {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.interests-contain {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+.list-group-item-light {
+  border: none !important;
+  background-color: transparent !important;
+  margin-bottom: 10px;
+  padding: 20px 10px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.list-group-item {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.fa-pen {
+  color: rgba(0, 0, 0, 0.6);
+  transform: scale(1);
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+.fa-pen:hover {
+  color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+#experience-main-container {
+  padding: 20px 20px 0px 20px;
+}
+
+.no-border {
+  border: none !important;
+}
+
+#education-main-container {
+  padding: 20px;
+}
+
+#experience-main-container .upload-container {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.125);
+  width: 320px;
+  padding: 20px;
+  position: absolute;
+  z-index: 999;
+  top: 50px;
+  left: 80px;
+}
+
+.experience-imgupload-container {
+  height: 28px;
+  width: 28px;
+  border-radius: 14px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.35);
+  position: absolute;
+  z-index: 10;
+  right: -5px;
+  bottom: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.6);
+  transition: transform 0.25s ease;
+}
+
+.experience-imgupload-container:hover {
+  transform: scale(1.1);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.experience-imgupload-container:active {
+  transform: scale(0.9);
+}
+
+.skills-img-placeholder {
+  height: 32px;
+  width: 32px;
+  background-color: rgb(243, 242, 239);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.068);
+}
+
+.brdr-top {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.brdr-bottom {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+.brdr-bottom:last-of-type {
+  border: none !important;
+  margin-bottom: 0 !important;
+}
+
+.brdr-bottom-strict {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+.see-all-btn {
+  width: 100%;
+  display: block;
+  background-color: #fff;
+  color: rgb(10, 102, 194);
+  border-radius: 0rem 0rem 0.6rem 0.6rem;
+}
+
+.see-all-btn:hover {
+  background-color: rgba(112, 181, 249, 0.15);
+  color: rgb(10, 102, 194);
+}
+
+/* Feed left styling */
+
+.feed-left-container,
+.feed-right-container {
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #fff;
+}
+
+.feed-left-container:first-child {
+  border-top: 4px solid #f8c77e;
+}
+
+.feed-left-container .feed-profile-picture-container {
+  height: 60px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.feed-left-container .feed-profile-picture-bg::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 0;
+  left: 0;
+  height: 61px;
+  background: rgb(20, 20, 20);
+  background: linear-gradient(0deg, rgba(20, 20, 20, 0.2) 0%, rgba(20, 20, 20, 0.7) 100%);
+  border-radius: 0.6rem 0.6rem 0rem 0rem;
+}
+
+.feed-left-container .feed-profile-picture-bg {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  height: 100px;
+  border-radius: 0.6rem;
+}
+
+.feed-left-container .feed-profile-premium-tag {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  left: 25px;
+  color: rgb(221, 221, 221);
+  letter-spacing: 3px;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.feed-left-container .feed-profile-picture-photo {
+  margin-top: -34px;
+  margin-bottom: 14px;
+  z-index: 3;
+  position: relative;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.feed-left-container a,
+.feed-right-container a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  font-size: 0.9rem;
+  padding: 4px 0px;
+}
+
+.feed-left-container .profile-link:hover,
+.feed-right-container .profile-link:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.feed-left-container .feed-profile-link:hover {
+  text-decoration: underline;
+}
+
+.feed-left-container .profile-link-strict {
+  border-radius: 0rem 0rem 0.6rem 0.6rem;
+}
+
+.feed-left-container .profile-link-strict:hover {
+  background-color: rgba(0, 0, 0, 0.125);
+}
+
+.feed-left-container .grey-text,
+.feed-right-container .grey-text,
+.grey-text {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.grey-text:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.feed-left-container .black-text,
+.feed-right-container .black-text {
+  color: #000;
+}
+
+.feed-left-container .blue-text,
+.feed-right-container .blue-text {
+  color: rgb(10, 102, 194);
+}
+
+.feed-left-container .black-text:hover,
+.feed-right-container .black-text:hover {
+  color: #000;
+}
+
+.black-text {
+  color: #000;
+}
+
+.feed-left-container i {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.feed-left-container .fa-plus:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.feed-left-container .dicover-more-btn:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  border-radius: 0rem 0rem 0.6rem 0.6rem;
+}
+
+/* Feed right styling */
+
+.feed-right-container .infoicon-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  height: 16px;
+  width: 16px;
+}
+
+.feed-right-container .fa-info {
+  font-size: 0.6rem;
+  color: #fff;
+}
+
+.feed-right-container .smaller {
+  font-size: 0.7rem;
+}
+
+.feed-right-container .profile-link .fa-external-link-alt {
+  opacity: 0;
+  font-size: 0.8rem;
+}
+
+.feed-right-container .profile-link:hover .fa-external-link-alt {
+  opacity: 1;
+}
+
+.feed-right-container button {
+  height: 29px;
+  width: 102px;
+}
+
+.feed-right-container .btn-outline-primary {
+  border: 1px solid rgb(10, 102, 194);
+  color: rgb(7, 91, 175);
+}
+
+.feed-right-container .btn-outline-primary:hover {
+  background-color: rgba(10, 102, 194, 0.13);
+  color: #007bff;
+  border: 2px solid rgb(10, 102, 194);
+}
+
+.swing-in-top-fwd {
+  -webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s both;
+  animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.15s both;
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2020-12-2 22:49:26
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation swing-in-top-fwd
+ * ----------------------------------------
+ */
+@-webkit-keyframes swing-in-top-fwd {
+  0% {
+    -webkit-transform: rotateX(-100deg);
+    transform: rotateX(-100deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 1;
+  }
+}
+@keyframes swing-in-top-fwd {
+  0% {
+    -webkit-transform: rotateX(-100deg);
+    transform: rotateX(-100deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: top;
+    transform-origin: top;
+    opacity: 1;
+  }
+}
+
+#navbar .nav-search-bar {
+  position: relative;
+}
+
+#navbar .nav-search-bar input {
+  padding: 6px 12px 6px 36px;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(238, 243, 248);
+  transition: padding 0.25s ease;
+  font-size: 1.1rem;
+  font-weight: lighter;
+}
+
+#navbar .nav-search-bar input:focus {
+  outline: none;
+  padding: 6px 12px 6px 50px;
+}
+
+#navbar .nav-search-bar i {
+  position: absolute;
+  left: 15px;
+}
+
+#navbar .search-results-container {
+  position: absolute;
+  z-index: 999;
+  width: 600px;
+  max-height: 300px;
+  overflow: hidden scroll;
+  background-color: #fff;
+  border-radius: 0rem 0rem 0.6rem 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.125);
+  padding: 0px 0px;
+  top: 40px;
+}
+
+#navbar .search-image {
+  height: 32px;
+  width: 32px;
+  border-radius: 16px;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+#navbar .search-item {
+  color: #000;
+  padding: 14px 20px;
+}
+
+#navbar .search-item:hover {
+  color: #000;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Login page styling */
+
+#login-main-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 999999999;
+}
+
+#login-main-container .login-title {
+  color: rgb(0, 115, 177);
+}
+
+#login-main-container h4 {
+  font-weight: bold;
+  font-size: 1.9rem;
+}
+
+#login-main-container .fa-linkedin {
+  font-size: 2.3rem;
+}
+
+#login-main-container .login-content-container {
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px 0px;
+  padding: 30px;
+  border-radius: 0.6rem;
+}
+
+#login-main-container .login-input-wrap {
+  position: relative;
+}
+
+#login-main-container .login-label {
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  font-size: 0.8rem;
+}
+
+#login-main-container input {
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  padding: 25px 10px 4px 10px;
+  width: 100%;
+}
+
+#login-main-container .forgot-password {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+#login-main-container .sign-in-btn {
+  border: none;
+  border-radius: 26px;
+  color: #fff;
+  font-weight: bold;
+  background-color: rgb(10, 102, 194);
+  height: 52px;
+  width: 352px;
+  transition: background-color 0.25s ease;
+}
+
+#login-main-container .sign-in-btn:hover {
+  background-color: rgb(0, 65, 130);
+}

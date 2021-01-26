@@ -1,0 +1,64 @@
+#sidebar-main-container .side {
+  background-color: #fff;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+#sidebar-main-container button {
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 16px;
+  height: 32px;
+  width: 32px;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+#sidebar-main-container button:focus,
+#sidebar-main-container button:active,
+#sidebar-main-container button:hover {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.08);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  transition: 0.25s all ease;
+}
+
+#sidebar-main-container button .fa-paper-plane,
+#sidebar-main-container button .fa-user-plus {
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+#sidebar-main-container .side img.image {
+  width: 56px;
+  height: 56px;
+  border-radius: 28px;
+}
+
+#sidebar-main-container .myLink,
+#sidebar-main-container .myLink:hover {
+  color: #000;
+  color: #000;
+}
+
+#sidebar-main-container .name-link {
+  color: #000;
+}
+
+#sidebar-main-container #learning-sidebar-main .fa-linkedin {
+  color: rgb(10, 102, 194);
+}
+
+#sidebar-main-container #learning-sidebar-main .learning-title {
+  letter-spacing: 2px;
+  font-size: 0.7rem;
+}
+
+#sidebar-main-container .video-placeholder {
+  background-color: rgba(0, 0, 0, 0.08);
+  height: 56px;
+  width: 93.3px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.2rem;
+}
