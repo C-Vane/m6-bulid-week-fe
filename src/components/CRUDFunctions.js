@@ -41,10 +41,8 @@ export const postFunction = async (endp, data) => {
       body: JSON.stringify(data),
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      headers: new Headers({
         "Content-Type": "application/json",
-      }),
+      },
     });
     if (response.ok) {
       return await response.json();
@@ -63,10 +61,8 @@ export const putFunction = async (endp, data) => {
       body: JSON.stringify(data),
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      headers: new Headers({
         "Content-Type": "application/json",
-      }),
+      },
     });
     if (response.ok) {
       return await response.json();
@@ -86,7 +82,7 @@ export const deleteFunction = async (endp) => {
       method: "DELETE",
     });
     if (response.ok) {
-      return await response.json();
+      return await response.text();
     } else {
       console.log(await response.text());
       return false;

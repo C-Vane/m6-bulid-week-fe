@@ -8,6 +8,7 @@ import PostLoader from "../../components/loaders/PostLoader";
 import PhotoModal from "../../components/PhotoModal";
 import Posts from "./Posts";
 import StartPost from "../../components/StartPost";
+import { deleteFunction, getFunction, postFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
 
 class FeedMiddle extends React.Component {
   state = {
@@ -33,140 +34,70 @@ class FeedMiddle extends React.Component {
   };
 
   // --------------------GET THE POSTS FROM API
-  getPosts = async (id) => {
-    let url = "https://striveschool-api.herokuapp.com/api/posts/";
-
-    try {
-      const response = await fetch(url, {
-        headers: new Headers({
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        let result = await response.json();
-        result = result.reverse();
-        setTimeout(() => {
-          this.setState({ posts: result, loadingPosts: true });
-        }, 2000);
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
+  getPosts = async (query) => {
+    const endp = query ? "post?" + query : "post";
+    const response = await getFunction(endp);
+    if (response) {
+      setTimeout(() => {
+        this.setState({ posts: response.posts, loadingPosts: true });
+      }, 2000);
+    } else {
+      console.log(response);
     }
   };
 
   //-------------------POST TEXT DATA TO API
   postData = async () => {
-    let data = this.state.currentPost;
-    let url = "https://striveschool-api.herokuapp.com/api/posts/";
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        this.state.currentPost.text === " " ? this.setState({ currentPostId: data._id, postImage: { post: "" }, inputImage: [] }) : this.setState({ currentPost: { text: " " }, currentPostId: "" });
-        this.state.currentPost.text === " " && this.state.startPostModal && this.setState({ openPhotoFromPost: true });
-        setTimeout(() => {
-          this.getPosts();
-        }, 1000);
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
+    let data = { ...this.state.currentPost, user: this.props.userID };
+    const response = await postFunction("post/", data);
+    if (response._id) {
+      this.state.currentPost.text === " " ? this.setState({ currentPostId: response._id, postImage: { post: "" }, inputImage: [] }) : this.setState({ currentPost: { text: " " }, currentPostId: "" });
+      this.state.currentPost.text === " " && this.state.startPostModal && this.setState({ openPhotoFromPost: true });
+      setTimeout(() => {
+        this.getPosts();
+      }, 1000);
+    } else {
+      console.log(response);
     }
   };
   //----------------------------POST IMAGE TYPE
 
   imagePost = async (id, file) => {
     let formData = new FormData();
-    formData.append("post", file);
-    let url = "https://striveschool-api.herokuapp.com/api/posts/" + id;
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        this.state.currentPost.text === " "
-          ? this.setState({ openPhotoFromPost: true, currentPostId: data._id, postImage: { post: "" }, inputImage: [] })
-          : this.setState({ currentPost: { text: " " }, postingCurrentId: "" });
-        setTimeout(() => {
-          this.getPosts();
-        }, 1000);
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
+    formData.append("image", file);
+    const response = await postFunctionImage("post/" + id + "/upload", formData);
+    if (response) {
+      this.state.currentPost.text === " "
+        ? this.setState({ openPhotoFromPost: true, currentPostId: response._id, postImage: { post: "" }, inputImage: [] })
+        : this.setState({ currentPost: { text: " " }, postingCurrentId: "" });
+      setTimeout(() => {
+        this.getPosts();
+      }, 1000);
+    } else {
+      console.log(response);
     }
   };
   //-----------------------------EDIT EXSISTING POST
   putData = async (event) => {
     event !== undefined && event.preventDefault();
     let { currentPost, currentPostId } = this.state;
-
-    let editPost = {
-      text: currentPost.text + " ",
-    };
-
-    let url = "https://striveschool-api.herokuapp.com/api/posts/";
-    try {
-      const response = await fetch(url + currentPostId, {
-        method: "PUT",
-        body: JSON.stringify(editPost),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
-      if (response.ok) {
-        setTimeout(() => {
-          this.getPosts();
-        }, 1000);
-        currentPost.text = " ";
-        currentPostId = "";
-        this.setState({ currentPost, currentPostId, editModal: false });
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
+    const response = await putFunction("post/" + currentPostId, currentPost);
+    if (response) {
+      this.getPosts();
+      currentPost.text = " ";
+      currentPostId = "";
+      this.setState({ currentPost, currentPostId, editModal: false });
+    } else {
+      console.log(response);
     }
   };
   //--------------------------------DELETE POST----------------
   deletePost = async (id) => {
-    let url = "https://striveschool-api.herokuapp.com/api/posts/";
-    try {
-      const response = await fetch(url + id, {
-        method: "DELETE",
-        headers: new Headers({
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        this.getPosts();
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
+    const response = await deleteFunction("post/" + id);
+    if (response) {
+      this.getPosts();
+    } else {
+      console.log(response);
     }
   };
   //---------------------HANDEL CHANGE FOR EDITING POSTS
@@ -258,7 +189,7 @@ class FeedMiddle extends React.Component {
         {loadingPosts
           ? posts.length > 0 &&
             posts.map((post, key) => key < 50 && <Posts name={name} userID={userID} profilePicture={profilePicture} key={key} data={post} deletePost={this.deletePost} editPost={this.editPost} />)
-          : Array.from({ length: 2 }, (_, i) => i + 1).map((i) => (
+          : Array.from({ length: 3 }, (_, i) => i + 1).map((i) => (
               <Card key={i} className='d-flex justify-content-center mt-2 align-content-center'>
                 <PostLoader className='w-100 h-100 p-4' />
               </Card>
