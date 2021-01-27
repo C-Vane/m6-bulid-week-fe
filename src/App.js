@@ -13,33 +13,28 @@ import Login from "./pages/logIn/Login";
 
 import MyNetwork from "./pages/MyNetwork/MyNetwork";
 import FullPageLoader from "./components/loaders/FullPageLoader";
+import { getFunction } from "./components/CRUDFunctions";
 
 function App() {
-  const currentUserID = "5fc4c48fed266800170ea3d8";
-  const [currentUserName, setCurrentUserName] = React.useState("");
+  const [currentName, setCurrentName] = React.useState("");
   const [currentJobTitle, setCurrentJobTitle] = React.useState("");
   const [currentProfilePicture, setCurrentProfilePicture] = React.useState("");
-
+  const [currentUserID, setCurrentUserId] = React.useState("");
+  const [currentUsername, setCurrentUsername] = React.useState("");
   const [isContactInfoOpen, setIsContactInfoOpen] = React.useState(false);
 
   const contactInfoHandler = () => {
     setIsContactInfoOpen(!isContactInfoOpen);
   };
 
-  const fetchUserDataHandler = async (id) => {
-    try {
-      let response = await fetch(`https://striveschool-api.herokuapp.com/api/profile/${id}`, {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
-      let data = await response.json();
-      setCurrentUserName(`${data.name} ${data.surname}`);
+  const fetchUserDataHandler = async () => {
+    let data = await getFunction("profile/user/userName");
+    if (data.name) {
+      setCurrentName(`${data.name} ${data.surname}`);
       setCurrentJobTitle(data.title);
       setCurrentProfilePicture(data.image);
-    } catch (er) {
-      console.log(er);
+      setCurrentUserId(data._id);
+      setCurrentUsername(data.username);
     }
   };
 
@@ -53,12 +48,12 @@ function App() {
         <Login />
       </Route>
       <Route path='/'>
-        <NavBar jobTitle={currentJobTitle} name={currentUserName} userID={currentUserID} profilePicture={currentProfilePicture} />
+        <NavBar jobTitle={currentJobTitle} name={currentName} userName={currentUsername} userID={currentUserID} profilePicture={currentProfilePicture} />
       </Route>
       <Route path='/feed' exact>
-        <MainFeedContent jobTitle={currentJobTitle} name={currentUserName} userID={currentUserID} profilePicture={currentProfilePicture} />
+        <MainFeedContent jobTitle={currentJobTitle} name={currentName} userID={currentUserID} userName={currentUsername} profilePicture={currentProfilePicture} />
       </Route>
-      <Route path='/profile/:id' exact>
+      <Route path='/profile/:userName' exact>
         <MainContent contactInfoHandler={contactInfoHandler} loggedInUserID={currentUserID} />
       </Route>
       <Route path='/network' exact>

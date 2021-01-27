@@ -46,14 +46,14 @@ class FeedMiddle extends React.Component {
       if (response.ok) {
         let result = await response.json();
         result = result.reverse();
-        this.setState({ posts: result, loadingPosts: true });
+        setTimeout(() => {
+          this.setState({ posts: result, loadingPosts: true });
+        }, 2000);
       } else {
         console.log(response);
-        this.setState({ loadingPosts: true });
       }
     } catch (e) {
       console.log(e);
-      this.setState({ loadingPosts: true });
     }
   };
 
