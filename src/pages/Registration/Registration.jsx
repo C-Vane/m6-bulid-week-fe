@@ -19,15 +19,21 @@ function Registration() {
       username: usernameInput,
       password: passwordInput,
     };
-    const token = await postFunction("profile/", user);
-    token.token ? loginSuccessHandler(token.token) : setShowInputError(true);
-    console.log(token);
+    const newUser = await postFunction("profile/", user);
+    if (newUser._id) {
+      const token = await postFunction("profile/login", {
+        user: newUser.username,
+        password: newUser.password,
+      });
+      token.token ? loginSuccessHandler(token.token) : setShowInputError(true);
+    } else {
+      setShowInputError(true);
+    }
   };
 
   const loginSuccessHandler = (token) => {
     localStorage.setItem("token", token);
     window.location.replace("/feed");
-    console.log(token);
   };
 
   return (
