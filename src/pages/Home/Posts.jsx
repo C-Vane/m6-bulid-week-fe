@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots, faGlobeAmericas, faGrinWink, faHandHoldingHeart, faHeart, faLightbulb, faPaperPlane, faShare, faSignLanguage, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import Comments from "../../components/PostComments";
+import { getFunction, postFunction } from "../../components/CRUDFunctions";
+import SearchItem from "../../components/SearchItem";
 
 class Posts extends React.Component {
   state = {
@@ -20,7 +22,6 @@ class Posts extends React.Component {
     icon: faThumbsUp,
     color: "rgba(0,0,0,0.6)",
     word: "Like",
-    numberLikes: 0,
     numberComments: 0,
     liked: [false, ""],
   };
@@ -32,122 +33,61 @@ class Posts extends React.Component {
   /*****************REACTIONS************************/
 
   /******FUNCTIONS FOR REACTION*******/
-  url = "https://striveschool-api.herokuapp.com/api/comments/";
 
   componentDidMount = () => {
     this.getReactions();
+    this.getComments();
   };
   isLiked = () => {
     if (this.state.liked[0]) {
-      this.deletePost(this.state.liked[1]);
+      this.postReactions();
       this.setState({ liked: [!this.state.liked[0], ""], color: "rgba(0,0,0,0.6)" });
     } else {
       this.handleChange(1);
     }
   };
   getReactions = async () => {
-    try {
-      let response = await fetch(this.url + this.props.data._id, {
-        method: "GET",
-        headers: new Headers({
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        let currentState = { ...this.states };
-        currentState.AllComments = await response.json();
-        currentState.AllReactions = currentState.AllComments.filter((comment) => comment.comment === "/reactions");
-        currentState.CommentsPost = currentState.AllComments.filter((comment) => comment.comment !== "/reactions");
-        currentState.numberComments = currentState.AllComments.length - currentState.AllReactions.length;
-        currentState.numberLikes = currentState.AllReactions.length;
-        let userReaction = currentState.AllReactions.filter((comment) => comment.author === "arzhk");
-        currentState.liked = userReaction.length > 0 && [true, userReaction[0]._id];
-        currentState.liked[0] && this.likeButton(userReaction[0].rate);
-        this.setState(currentState);
-      } else {
-        console.log(response);
-      }
-    } catch (error) {
-      console.log(error);
+    let response = await getFunction("post/" + this.props.data._id);
+    if (response) {
+      let currentState = { ...this.states };
+      console.log(response);
+      currentState.AllReactions = response.reactions;
+      currentState.numberLikes = currentState.AllReactions.length;
+      let userReaction = currentState.AllReactions.filter((comment) => comment.user._id === this.props.userID);
+      currentState.liked = userReaction.length > 0 && [true, userReaction[0]._id];
+      currentState.liked[0] && this.likeButton(userReaction[0].reaction);
+      this.setState(currentState);
+    } else {
+      console.log(response);
+    }
+  };
+  getComments = async () => {
+    let response = await getFunction("comments/" + this.props.data._id);
+    if (response) {
+      let currentState = { ...this.states };
+      currentState.CommentsPost = response.comment;
+      currentState.numberComments = currentState.CommentsPost;
+      this.setState(currentState);
     }
   };
 
   postReactions = async (rate) => {
-    let commentReaction = {
-      elementId: this.props.data._id,
-      rate: rate,
-      comment: "/reactions",
+    let Reaction = {
+      user: this.props.userID,
+      reaction: rate,
     };
-    try {
-      let response = await fetch(this.url, {
-        method: "POST",
-        body: JSON.stringify(commentReaction),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        this.getReactions();
-      } else {
-        console.log(response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  deletePost = async (id) => {
-    try {
-      let response = await fetch(this.url + id, {
-        method: "DELETE",
-
-        headers: new Headers({
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        this.getReactions();
-      } else {
-        console.log(response);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  putReactions = async (rate, id) => {
-    let commentReaction = {
-      elementId: this._id,
-      rate: rate,
-      comment: "/reactions",
-    };
-    try {
-      let response = await fetch(this.url + id, {
-        method: "PUT",
-        body: JSON.stringify(commentReaction),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        this.getReactions();
-      } else {
-        console.log(response);
-      }
-    } catch (error) {
-      console.log(error);
+    const response = await postFunction("post/reaction/" + this.props.data._id, Reaction);
+    if (response._id) {
+      this.getReactions();
+    } else {
+      console.log(response);
     }
   };
 
   handleChange = (rate) => {
     this.setState({ reaction: rate });
     this.likeButton(rate);
-    this.state.liked[0] ? this.putReactions(rate, this.state.liked[1]) : this.postReactions(rate);
+    this.postReactions(rate);
   };
 
   likeButton = (rate) => {
@@ -187,7 +127,7 @@ class Posts extends React.Component {
   };
   render() {
     let { image, user, text, createdAt, updatedAt, _id, reactions } = this.props.data;
-    let { deletePost, editPost, userID, profilePicture } = this.props;
+    let { deletePost, editPost, userID, userName, profilePicture } = this.props;
     let { name, surname, title } = user;
     let { comments, deletePosts, reactionsModal, AllReactions, numberComments, color, icon, word, CommentsPost, liked } = this.state;
     return (
@@ -272,7 +212,7 @@ class Posts extends React.Component {
                 <path d='M19.46 11l-3.91-3.91a7 7 0 01-1.69-2.74l-.49-1.47A2.76 2.76 0 0010.76 1 2.75 2.75 0 008 3.74v1.12a9.19 9.19 0 00.46 2.85L8.89 9H4.12A2.12 2.12 0 002 11.12a2.16 2.16 0 00.92 1.76A2.11 2.11 0 002 14.62a2.14 2.14 0 001.28 2 2 2 0 00-.28 1 2.12 2.12 0 002 2.12v.14A2.12 2.12 0 007.12 22h7.49a8.08 8.08 0 003.58-.84l.31-.16H21V11zM19 19h-1l-.73.37a6.14 6.14 0 01-2.69.63H7.72a1 1 0 01-1-.72l-.25-.87-.85-.41A1 1 0 015 17l.17-1-.76-.74A1 1 0 014.27 14l.66-1.09-.73-1.1a.49.49 0 01.08-.7.48.48 0 01.34-.11h7.05l-1.31-3.92A7 7 0 0110 4.86V3.75a.77.77 0 01.75-.75.75.75 0 01.71.51L12 5a9 9 0 002.13 3.5l4.5 4.5H19z'></path>
               </svg>
             )}
-            <span className='d-sm-none d-lg-inline-block'> {word}</span>{" "}
+            <span className='d-sm-none d-lg-inline-block'> {liked[0] ? word : "Like"}</span>{" "}
           </Button>
           <Button variant='light' onClick={this.toggleComments}>
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' data-supported-dps='24x24' fill='rgba(0,0,0,0.6)' width='24' height='24' focusable='false' className='mr-1'>
@@ -314,7 +254,7 @@ class Posts extends React.Component {
           </Row>
         </Row>
 
-        {comments && <Comments comments={CommentsPost} profilePicture={profilePicture} postId={this.props.data._id} getComments={this.getReactions} />}
+        {comments && <Comments comments={CommentsPost} profilePicture={profilePicture} userID={userID} userName={userName} postId={this.props.data._id} getComments={this.getComments} />}
 
         {this.state.deletePost && (
           <Modal show={true} onHide={this.toggleDeletePosts}>
@@ -354,15 +294,20 @@ class Posts extends React.Component {
                   <p>Users Name</p>
                   <p>Reaction</p>
                 </Row>
-                {AllReactions.map((reaction) => (
-                  <Row className='justify-content-around m-2 ml-0 pb-2 border-bottom'>
-                    <div>{reaction.author}</div>{" "}
+                {AllReactions.map((reaction, key) => (
+                  <Row key={key} className='justify-content-around m-2 ml-0 pb-2 border-bottom'>
+                    <div>
+                      <SearchItem data={reaction.user} />
+                    </div>
                     <FontAwesomeIcon
                       size='4x'
                       icon={(() => {
                         let result;
 
-                        switch (reaction.rate) {
+                        switch (reaction.reaction) {
+                          case 1:
+                            result = faThumbsUp;
+                            break;
                           case 2:
                             result = faSignLanguage;
                             break;
