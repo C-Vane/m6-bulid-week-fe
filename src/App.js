@@ -29,7 +29,7 @@ function App() {
 
   const fetchUserDataHandler = async () => {
     let data = await getFunction("profile/user/userName");
-    if (data.name) {
+    if (data && data.name) {
       setCurrentName(`${data.name} ${data.surname}`);
       setCurrentJobTitle(data.title);
       setCurrentProfilePicture(data.image);
@@ -54,7 +54,7 @@ function App() {
         <MainFeedContent jobTitle={currentJobTitle} name={currentName} userID={currentUserID} userName={currentUsername} profilePicture={currentProfilePicture} />
       </Route>
       <Route path='/profile/:userName' exact>
-        <MainContent contactInfoHandler={contactInfoHandler} loggedInUserID={currentUserID} />
+        <MainContent contactInfoHandler={contactInfoHandler} loggedInUserID={currentUserID} userName={currentUsername} />
       </Route>
       <Route path='/network' exact>
         <MyNetwork />

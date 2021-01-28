@@ -8,30 +8,22 @@ import About from "./About";
 import MyLoader from "../../components/loaders/ContentLoader";
 import ImageUploader from "react-images-upload";
 import { withRouter } from "react-router-dom";
+import { getFunction } from "../../components/CRUDFunctions";
 function MainProfileBlock(props) {
   const [isMoreClicked, setIsMoreClicked] = React.useState(false);
   const [userData, setUserData] = React.useState({});
-  const [currentUserID, setCurrentUserID] = React.useState(props.userID);
+  const [currentUserName, setCurrentUserName] = React.useState(props.userName);
   const [isFinishedLoading, setIsFinishedLoading] = React.useState(false);
   const [showProfilePictureUpload, setShowProfilePictureUpload] = React.useState(false);
   const [profilePictureUploadImg, setProfilePictureUploadImg] = React.useState([]);
   const [isImageUploading, setIsImageUploading] = React.useState(false);
 
-  const fetchUserDataHandler = async (id) => {
-    try {
-      let response = await fetch(`https://striveschool-api.herokuapp.com/api/profile/${id}`, {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
-      let data = await response.json();
-      setUserData(data);
-      setTimeout(() => {
-        setIsFinishedLoading(true);
-      }, 1000);
-    } catch (er) {
-      console.log(er);
+  const fetchUserDataHandler = async (userName) => {
+    const user = await getFunction("profile/user/" + userName);
+    if (user._id) {
+      setUserData(user);
+    } else {
+      console.log(user);
     }
   };
 
@@ -43,7 +35,7 @@ function MainProfileBlock(props) {
     formData.append("profile", blob);
 
     try {
-      let response = await fetch(`https://striveschool-api.herokuapp.com/api/profile/${props.loggedInUserID}/picture`, {
+      let response = await fetch(`https://striveschool-api.herokuapp.com/api/profile/${props.loggedInUserName}/picture`, {
         method: "POST",
         body: formData,
         headers: {
@@ -54,7 +46,7 @@ function MainProfileBlock(props) {
       setTimeout(() => {
         setIsImageUploading(false);
         setShowProfilePictureUpload(!showProfilePictureUpload);
-        fetchUserDataHandler(currentUserID);
+        fetchUserDataHandler(currentUserName);
         window.location.reload();
       }, 1000);
     } catch (er) {
@@ -75,16 +67,16 @@ function MainProfileBlock(props) {
   };
 
   React.useEffect(() => {
-    setCurrentUserID(props.userID);
-    fetchUserDataHandler(currentUserID);
+    setCurrentUserName(props.userName);
+    fetchUserDataHandler(currentUserName);
     setIsFinishedLoading(true);
   }, []);
 
   React.useEffect(() => {
     setIsFinishedLoading(false);
-    setCurrentUserID(props.userID);
-    fetchUserDataHandler(props.userID);
-  }, [props.userID]);
+    setCurrentUserName(props.userName);
+    fetchUserDataHandler(props.userName);
+  }, [props.userName]);
   const { pathname } = props.location;
   return (
     <>
@@ -140,7 +132,7 @@ function MainProfileBlock(props) {
               <>
                 <div className='profile-left w-75'>
                   <div className='profile-photo d-flex align-items-end justify-content-center' style={{ background: `url(${userData.image})` }}>
-                    {props.loggedInUserID === currentUserID && (
+                    {props.loggedInUserName === currentUserName && (
                       <div className={pathname === "/profile/5fc4c48fed266800170ea3d8" ? "profile-picture-edit-btn" : "profile-picture-edit-btn userOnly"} onClick={showProfilePictureUploadHandler}>
                         <i className='fas fa-pen'></i>
                       </div>

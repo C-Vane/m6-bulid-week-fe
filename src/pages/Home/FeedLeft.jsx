@@ -13,7 +13,7 @@ function FeedLeft(props) {
 
         <div className='text-center'>
           <Link
-            to={`/profile/${props.userID}`}
+            to={`/profile/${props.userName}`}
             className='feed-profile-picture-photo mx-auto'
             style={{
               height: 72,
@@ -24,7 +24,7 @@ function FeedLeft(props) {
             }}
           ></Link>
 
-          <Link to={`/profile/${props.userID}`} className='feed-profile-link brdr-bottom-strict pb-3'>
+          <Link to={`/profile/${props.userName}`} className='feed-profile-link brdr-bottom-strict pb-3'>
             <h6 className='mb-0'>{props.name}</h6>
             <p className='mb-0'>{props.jobTitle}</p>
           </Link>
