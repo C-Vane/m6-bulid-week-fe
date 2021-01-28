@@ -21,11 +21,13 @@ function Registration() {
     };
     const token = await postFunction("profile/", user);
     token.token ? loginSuccessHandler(token.token) : setShowInputError(true);
+    console.log(token);
   };
 
   const loginSuccessHandler = (token) => {
     localStorage.setItem("token", token);
     window.location.replace("/feed");
+    console.log(token);
   };
 
   return (
@@ -92,6 +94,16 @@ function Registration() {
               <span>
                 <small className="text-danger">
                   <br />A password it's required
+                </small>
+              </span>
+            ) : (
+              ""
+            )}
+            {showInputError && passwordInput.length < 6 ? (
+              <span>
+                <small className="text-danger">
+                  <br />
+                  The password it's too short
                 </small>
               </span>
             ) : (
