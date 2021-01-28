@@ -4,11 +4,11 @@ import { Link, useHistory } from "react-router-dom";
 import { postFunction } from "../../components/CRUDFunctions";
 
 function Registration() {
-  const [emailInput, setEmailInput] = React.useState("");
-  const [passwordInput, setPasswordInput] = React.useState("");
   const [nameInput, setNameInput] = React.useState("");
   const [surnameInput, setSurnameInput] = React.useState("");
+  const [emailInput, setEmailInput] = React.useState("");
   const [usernameInput, setUsernameInput] = React.useState("");
+  const [passwordInput, setPasswordInput] = React.useState("");
   const [showInputError, setShowInputError] = React.useState(false);
 
   const signUpHandler = async () => {
@@ -47,8 +47,57 @@ function Registration() {
             {showInputError && (
               <small className="text-danger">Insert valid informations</small>
             )}
-          </div>
 
+            {showInputError && !nameInput ? (
+              <span>
+                <small className="text-danger">
+                  <br />
+                  Please insert a name
+                </small>
+              </span>
+            ) : (
+              ""
+            )}
+            {showInputError && !surnameInput ? (
+              <span>
+                <small className="text-danger">
+                  <br />
+                  Please insert a surname
+                </small>
+              </span>
+            ) : (
+              ""
+            )}
+            {showInputError && !emailInput ? (
+              <span>
+                <small className="text-danger">
+                  <br />
+                  Please insert a valid email
+                </small>
+              </span>
+            ) : (
+              ""
+            )}
+            {showInputError && !usernameInput ? (
+              <span>
+                <small className="text-danger">
+                  <br />
+                  Please insert a username
+                </small>
+              </span>
+            ) : (
+              ""
+            )}
+            {showInputError && !passwordInput ? (
+              <span>
+                <small className="text-danger">
+                  <br />A password it's required
+                </small>
+              </span>
+            ) : (
+              ""
+            )}
+          </div>
           <div class="d-flex flex-column">
             <div className="login-input-wrap mb-4">
               <p className="login-label mb-0">Name</p>
