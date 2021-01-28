@@ -128,10 +128,10 @@ class Posts extends React.Component {
     }
   };
   render() {
-    let { image, user, text, createdAt, updatedAt, _id, reactions } = this.props.data;
+    let { image, user, text, createdAt, updatedAt, _id } = this.props.data;
     let { deletePost, editPost, userID, userName, profilePicture } = this.props;
     let { name, surname, title } = user;
-    let { comments, deletePosts, reactionsModal, AllReactions, numberComments, color, icon, word, CommentsPost, liked, next } = this.state;
+    let { comments, numberLikes, reactionsModal, AllReactions, numberComments, color, icon, word, CommentsPost, liked, next } = this.state;
     return (
       <Card className='mt-2 posts'>
         <Row className='justify-content-start m-2'>
@@ -197,9 +197,9 @@ class Posts extends React.Component {
           </Col>
         </Card.Body>
         <p className='border-bottom m-2 mx-3 pb-3' onClick={this.toggleReactions}>
-          {reactions > 0 && (
+          {numberLikes > 0 && (
             <>
-              <FontAwesomeIcon icon={faThumbsUp} style={{ color: "5894f5" }} /> {reactions}
+              <FontAwesomeIcon icon={faThumbsUp} style={{ color: "5894f5" }} /> {numberLikes}
             </>
           )}
           {numberComments > 0 && <> - {numberComments} Comments</>}{" "}

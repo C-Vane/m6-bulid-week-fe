@@ -42,7 +42,11 @@ class FeedMiddle extends React.Component {
     const response = await getFunction(endp);
     if (response) {
       setTimeout(() => {
-        this.setState({ posts: query ? [...this.state.posts, ...response.posts] : response.posts, next: response.links.next ? response.links.next.split("?")[1] : "", loadingPosts: true });
+        this.setState({
+          posts: query ? [...this.state.posts, ...response.posts] : response.posts,
+          next: response.link && response.links.next ? response.links.next.split("?")[1] : "",
+          loadingPosts: true,
+        });
       }, 2000);
     } else {
       console.log(response);
@@ -74,7 +78,7 @@ class FeedMiddle extends React.Component {
         ? this.setState({ openPhotoFromPost: true, currentPostId: response._id, postImage: { post: "" }, inputImage: [] })
         : this.setState({ currentPost: { text: " " }, postingCurrentId: "" });
       setTimeout(() => {
-        this.getPosts();
+        this.getPosts("offset=0&limit=5");
       }, 1000);
     } else {
       console.log(response);
@@ -146,6 +150,8 @@ class FeedMiddle extends React.Component {
   toggleModal = (item, from) => {
     const currentstate = { ...this.state };
     currentstate[item + "Modal"] = !currentstate[item + "Modal"];
+    currentstate.inputImage = [];
+    currentstate.currentPost = { text: "" };
     this.setState(currentstate);
   };
   render() {
