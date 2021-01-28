@@ -10,6 +10,7 @@ import ContactInfoPopup from "./components/ContactInfoPopup";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import MainFeedContent from "./pages/Home/MainFeedContent";
 import Login from "./pages/logIn/Login";
+import Registration from "./pages/Registration/Registration";
 
 import MyNetwork from "./pages/MyNetwork/MyNetwork";
 import FullPageLoader from "./components/loaders/FullPageLoader";
@@ -28,7 +29,7 @@ function App() {
   };
 
   const fetchUserDataHandler = async () => {
-    let data = await getFunction("profile/user/userName");
+    let data = await getFunction("profile/");
     if (data.name) {
       setCurrentName(`${data.name} ${data.surname}`);
       setCurrentJobTitle(data.title);
@@ -44,27 +45,45 @@ function App() {
 
   return (
     <Router>
-      <Route path='/' exact>
+      {/* <Route path="/" exact>
         <Login />
       </Route>
-      <Route path='/'>
-        <NavBar jobTitle={currentJobTitle} name={currentName} userName={currentUsername} userID={currentUserID} profilePicture={currentProfilePicture} />
+      <Route path="/">
+        <NavBar
+          jobTitle={currentJobTitle}
+          name={currentName}
+          userName={currentUsername}
+          userID={currentUserID}
+          profilePicture={currentProfilePicture}
+        />
       </Route>
-      <Route path='/feed' exact>
-        <MainFeedContent jobTitle={currentJobTitle} name={currentName} userID={currentUserID} userName={currentUsername} profilePicture={currentProfilePicture} />
+      <Route path="/feed" exact>
+        <MainFeedContent
+          jobTitle={currentJobTitle}
+          name={currentName}
+          userID={currentUserID}
+          userName={currentUsername}
+          profilePicture={currentProfilePicture}
+        />
       </Route>
-      <Route path='/profile/:userName' exact>
-        <MainContent contactInfoHandler={contactInfoHandler} loggedInUserID={currentUserID} />
+      <Route path="/profile/:userName" exact>
+        <MainContent
+          contactInfoHandler={contactInfoHandler}
+          loggedInUserID={currentUserID}
+        />
       </Route>
-      <Route path='/network' exact>
+      <Route path="/network" exact>
         <MyNetwork />
       </Route>
-      {isContactInfoOpen && <ContactInfoPopup contactInfoHandler={contactInfoHandler} />}
-      <Route path='/learning' exact component={Learning} />
-      <Route path='/jobs' exact component={Jobs} />
+      {isContactInfoOpen && (
+        <ContactInfoPopup contactInfoHandler={contactInfoHandler} />
+      )}
+      <Route path="/learning" exact component={Learning} />
+      <Route path="/jobs" exact component={Jobs} />
 
-      <Route path='/' component={Footer} />
-      <FullPageLoader />
+      <Route path="/" component={Footer} />
+      <FullPageLoader /> */}
+      <Registration />
     </Router>
   );
 }
