@@ -1,13 +1,16 @@
 import React from "react";
-import { Image, Form, Col, Button } from "react-bootstrap";
-import Moment from "react-moment";
-import { postFunction } from "./CRUDFunctions";
+import { Image, Form, Col } from "react-bootstrap";
+import InfiniteScroll from "react-infinite-scroller";
+import CommentItem from "./commentItem";
+import { deleteFunction, postFunction, putFunction } from "./CRUDFunctions";
 
 class Comments extends React.Component {
   state = {
     comments: [],
     loaded: false,
     addComment: "",
+    editComment: "",
+    edit: false,
   };
 
   handleChange = (e) => {
@@ -25,18 +28,40 @@ class Comments extends React.Component {
     const response = await postFunction("comments/", commentReaction);
     if (response) {
       this.setState({ addComment: "" });
+      this.props.getComments();
+    } else {
+      console.log(response);
+    }
+  };
+  deleteComments = async (id) => {
+    const response = await deleteFunction("comments/" + id);
+    if (response) {
+      this.props.getComments();
+    } else {
+      console.log(response);
+    }
+  };
+  editComments = async (e, id, text) => {
+    e.preventDefault();
+    let commentReaction = {
+      comment: text,
+    };
+    const response = await putFunction("comments/" + id, commentReaction);
+    if (response) {
+      this.setState({ editComment: "" });
+      this.props.getComments();
     } else {
       console.log(response);
     }
   };
   render() {
-    let { profilePicture, comments } = this.props;
+    let { profilePicture, comments, userID, next, getComments } = this.props;
     const { addComment } = this.state;
     return (
       <div className='mt-2 pt-2'>
         <Col>
           <div className='row'>
-            <Col sm={1} className='d-sm-none d-md-inline mr-2'>
+            <Col sm={1} className='d-none d-sm-inline mr-2'>
               <Image src={profilePicture} style={{ width: "40px", height: "40px" }} roundedCircle />
             </Col>
             <Col sm={10} className='p-0'>
@@ -47,34 +72,11 @@ class Comments extends React.Component {
               </Form>
             </Col>
           </div>
-          <div>
-            {comments.length > 0 &&
-              comments.map((comment, index) => (
-                <div className='mb-3'>
-                  <div key={index} className='comments w-100 d-flex'>
-                    <Col className='m-0 p-2 pl-3'>
-                      <div className='m-0 p-0 d-flex flex-wrap'>
-                        <h6 className='m-0 p-0'>{comment.author}</h6> ~
-                        <small className='text-muted mb-2 font-weight-lighter'>
-                          {" "}
-                          <Moment fromNow>{comment.createdAt}</Moment>{" "}
-                        </small>
-                      </div>
-                      <p className='m-0 p-0'>{comment.comment}</p>
-                    </Col>
-                  </div>
-                  <small>
-                    {" "}
-                    <Button className='m-0 p-0 text-muted' variant='link'>
-                      Like
-                    </Button>{" "}
-                    |{" "}
-                    <Button className='m-0 p-0 text-muted' variant='link'>
-                      Reply
-                    </Button>
-                  </small>
-                </div>
-              ))}
+          <div style={{ maxHeight: "25vh", overflow: "hidden", overflowY: "scroll" }} ref={(ref) => (this.scrollParentRef = ref)}>
+            <InfiniteScroll pageStart={0} getScrollParent={() => this.scrollParentRef} hasMore={next.length > 0} loadMore={() => getComments(next)} useWindow={false} loader={<div>Loading...</div>}>
+              {comments.length > 0 &&
+                comments.map((comment, index) => <CommentItem key={index} comment={comment} deleteComments={this.deleteComments} editComments={this.editComments} userID={userID} />)}
+            </InfiniteScroll>
           </div>
         </Col>
       </div>

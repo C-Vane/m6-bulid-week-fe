@@ -9,6 +9,7 @@ import PhotoModal from "../../components/PhotoModal";
 import Posts from "./Posts";
 import StartPost from "../../components/StartPost";
 import { deleteFunction, getFunction, postFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
+import InfiniteScroll from "react-infinite-scroller";
 
 class FeedMiddle extends React.Component {
   state = {
@@ -27,10 +28,12 @@ class FeedMiddle extends React.Component {
     posts: [],
     inputImage: [],
     postImage: "",
+    next: "",
+    position: Math.max(document.documentElement.scrollHeight, document.documentElement.offsetHeight),
   };
 
   componentDidMount = () => {
-    this.getPosts();
+    this.getPosts("offset=0&limit=5");
   };
 
   // --------------------GET THE POSTS FROM API
@@ -39,7 +42,7 @@ class FeedMiddle extends React.Component {
     const response = await getFunction(endp);
     if (response) {
       setTimeout(() => {
-        this.setState({ posts: response.posts, loadingPosts: true });
+        this.setState({ posts: query ? [...this.state.posts, ...response.posts] : response.posts, next: response.links.next ? response.links.next.split("?")[1] : "", loadingPosts: true });
       }, 2000);
     } else {
       console.log(response);
@@ -146,7 +149,7 @@ class FeedMiddle extends React.Component {
     this.setState(currentstate);
   };
   render() {
-    const { photoModal, videoModal, articleModal, inputImage, startPostModal, eventsModal, loadingPosts, posts, editModal, currentPost } = this.state;
+    const { photoModal, videoModal, articleModal, inputImage, startPostModal, eventsModal, loadingPosts, posts, editModal, currentPost, next, position } = this.state;
     const { name, userID, profilePicture } = this.props;
     return (
       <div id='feedMiddle'>
@@ -186,15 +189,25 @@ class FeedMiddle extends React.Component {
         {articleModal && <ArticleModal show={true} />}
         {eventsModal && <EventsModal title='events' show={true} onHide={this.toggleModal} />}
         {startPostModal && <StartPost show={true} name={name} userID={userID} onHide={this.toggleModal} sendPosts={this.sendPosts} inputImage={inputImage != null && inputImage} />}
-        {loadingPosts
-          ? posts.length > 0 &&
-            posts.map((post, key) => key < 50 && <Posts name={name} userID={userID} profilePicture={profilePicture} key={key} data={post} deletePost={this.deletePost} editPost={this.editPost} />)
-          : Array.from({ length: 3 }, (_, i) => i + 1).map((i) => (
-              <Card key={i} className='d-flex justify-content-center mt-2 align-content-center'>
-                <PostLoader className='w-100 h-100 p-4' />
-              </Card>
-            ))}
-
+        <InfiniteScroll
+          pageStart={0}
+          hasMore={next.length > 0}
+          loadMore={() => this.getPosts(next)}
+          loader={
+            <Card className='d-flex justify-content-center mt-2 align-content-center'>
+              <PostLoader className='w-100 h-100 p-4' />
+            </Card>
+          }
+        >
+          {loadingPosts
+            ? posts.length > 0 &&
+              posts.map((post, key) => key < 50 && <Posts name={name} userID={userID} profilePicture={profilePicture} key={key} data={post} deletePost={this.deletePost} editPost={this.editPost} />)
+            : Array.from({ length: 3 }, (_, i) => i + 1).map((i) => (
+                <Card key={i} className='d-flex justify-content-center mt-2 align-content-center'>
+                  <PostLoader className='w-100 h-100 p-4' />
+                </Card>
+              ))}
+        </InfiniteScroll>
         {/*----------------------------- EDIT MODAL -------------------------------- */}
         {editModal && (
           <div>
