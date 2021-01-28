@@ -167,7 +167,7 @@ class Posts extends React.Component {
 
           <Col className='d-flex flex-column'>
             <Row>
-              <Link to={"/profile/" + user._id} className='text-dark'>
+              <Link to={"/profile/" + user.username} className='text-dark'>
                 <h6 className='d-inline-block ml-3 mr-2 m-0 p-0 post-name-clickable'>
                   {name} {surname}
                 </h6>

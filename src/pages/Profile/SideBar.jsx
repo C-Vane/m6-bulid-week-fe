@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getFunction } from "../../components/CRUDFunctions";
 import PeopleLoaders from "../../components/loaders/PeopleLoaders";
 import "./SideBar.css";
 
@@ -13,27 +14,15 @@ class SideBar extends React.Component {
     fetchPeopleYouKnowIndex: 0,
   };
 
-  getData = (nameofarray, nameofsplicedarray) => {
-    fetch("https://striveschool-api.herokuapp.com/api/profile/ ", {
-      method: "GET",
-      headers: new Headers({
-        "Content-type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzEwNmVkMjY2ODAwMTcwZWEzZDAiLCJpYXQiOjE2MDY3MzA2MTYsImV4cCI6MTYwNzk0MDIxNn0.0SA5BuCxgs7H-mWOcIfvvED6ga9_s3jGPIvujZ4KSbA",
-      }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        this.setState({
-          [nameofarray]: data,
-          [nameofsplicedarray]: data.splice(0, 6),
-        });
-      })
-      .catch((err) => {
-        console.error(err);
+  getData = async (nameofarray, nameofsplicedarray) => {
+    const data = await getFunction("profile/");
+    console.log(data);
+    if (data) {
+      this.setState({
+        [nameofarray]: data,
+        [nameofsplicedarray]: data.splice(0, 6),
       });
+    }
   };
 
   componentDidMount = () => {
@@ -78,16 +67,16 @@ class SideBar extends React.Component {
           <div className='side mb-3'>
             <div className='pt-3 pb-1 px-4'>
               <h4 className='font-weight-normal mb-2'>People also viewed</h4>
-              {this.state.connectionsArray.length > 0
+              {this.state.connectionsArray
                 ? this.state.connectionsArraySpliced.map((people, index) => (
                     <div key={index} className='d-flex justify-content-between mb-2 py-3 brdr-bottom'>
                       <div className='d-flex'>
-                        <Link to={`/profile/${people._id}`} className='d-flex myLink'>
+                        <Link to={`/profile/${people.username}`} className='d-flex myLink'>
                           <img className='image mr-3' src={people.image} alt='user-img' />
                           <div className='d-flex flex-column'>
-                            <div className='name'>
+                            <div className='name text-nowrap'>
                               <p className='font-weight-bold mb-0' style={{ width: "95%" }}>
-                                {people.name} {people.surname}
+                                {people.name + " " + people.surname}
                               </p>
                             </div>
                             <p className='font-weight-light mb-0'>1st</p>
@@ -112,17 +101,15 @@ class SideBar extends React.Component {
           <div className='side w-100 mb-3'>
             <div className='pt-3 pb-1 px-4'>
               <h4 className='font-weight-normal mb-4'>People you may know</h4>
-              {this.state.connectionsArray.length > 0
+              {this.state.connectionsArray
                 ? this.state.peopleYouMayKnowSpliced.map((people, index) => (
                     <div key={index} className='d-flex justify-content-between mb-2 pb-3 brdr-bottom'>
                       <div className='d-flex'>
-                        <Link to={`/profile/${people._id}`} className='d-flex myLink'>
+                        <Link to={`/profile/${people.username}`} className='d-flex myLink'>
                           <img className='image mr-3' src={people.image} alt='user-img' />
                           <div className='d-flex flex-column'>
-                            <div className='name'>
-                              <p className='font-weight-bold mb-0'>
-                                {people.name} {people.surname}
-                              </p>
+                            <div className='name text-nowrap'>
+                              <p className='mb-0'>{people.name + " " + people.surname}</p>
                             </div>
                             <p className='font-weight-light mb-0'>1st</p>
                             <p className='mb-0'>{people.title}</p>
@@ -193,9 +180,11 @@ class SideBar extends React.Component {
               </div>
             </div>
             <div className='text-center'>
-              <div className='see-all-btn font-weight-bold d-block py-2 brdr-top' style={{ cursor: "pointer" }}>
-                Show more on LinkedIn Learning
-              </div>
+              <Link to='/learning'>
+                <div className='see-all-btn font-weight-bold d-block py-2 brdr-top' style={{ cursor: "pointer" }}>
+                  Show more on LinkedIn Learning
+                </div>
+              </Link>
             </div>
           </div>
         </div>
