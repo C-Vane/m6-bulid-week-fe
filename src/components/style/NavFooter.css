@@ -8,7 +8,7 @@
 #editModal .modal-body,
 #addModal .modal-body,
 #postEvent .modal-body {
-  height: 50vh;
+  max-height: 50vh;
   overflow: hidden;
   overflow-y: scroll;
   padding: 25px;
@@ -327,6 +327,7 @@ button.dropdown-toggle {
   background-color: rgb(243, 243, 243);
   width: 100%;
   border-radius: 16px;
+  border-top-left-radius: 0px;
   padding: 8px 4px;
 }
 .comments h6 {

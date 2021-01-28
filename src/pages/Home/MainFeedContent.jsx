@@ -9,7 +9,7 @@ function MainFeedContent({ jobTitle, name, userName, userID, profilePicture }) {
   return (
     <Container className='pt-5'>
       <Row className='mt-5'>
-        <Col xs={3}>
+        <Col xs={3} className='d-none d-sm-inline-block'>
           <StickyBox offsetTop={65} offsetBottom={20}>
             <FeedLeft jobTitle={jobTitle} name={name} userID={userID} userName={userName} profilePicture={profilePicture} />
           </StickyBox>
@@ -17,7 +17,7 @@ function MainFeedContent({ jobTitle, name, userName, userID, profilePicture }) {
         <Col xs={5}>
           <FeedMiddle jobTitle={jobTitle} name={name} userID={userID} userName={userName} profilePicture={profilePicture} />
         </Col>
-        <Col xs={4}>
+        <Col xs={4} className='d-none d-sm-inline-block'>
           <StickyBox offsetTop={65} offsetBottom={20}>
             <FeedRight />
           </StickyBox>
