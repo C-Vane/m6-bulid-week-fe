@@ -45,7 +45,7 @@ function App() {
 
   return (
     <Router>
-      {/* <Route path="/" exact>
+      <Route path="/" exact>
         <Login />
       </Route>
       <Route path="/">
@@ -78,12 +78,14 @@ function App() {
       {isContactInfoOpen && (
         <ContactInfoPopup contactInfoHandler={contactInfoHandler} />
       )}
+      <Route path="/signup" exact>
+        <Registration />
+      </Route>
       <Route path="/learning" exact component={Learning} />
       <Route path="/jobs" exact component={Jobs} />
 
       <Route path="/" component={Footer} />
-      <FullPageLoader /> */}
-      <Registration />
+      <FullPageLoader />
     </Router>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import "./Registration.css";
 import { Link, useHistory } from "react-router-dom";
 import { postFunction } from "../../components/CRUDFunctions";
 
@@ -30,11 +31,11 @@ function Registration() {
   return (
     <div
       id="login-main-container"
-      className="d-flex flex-column justify-content-center align-items-center"
+      className="d-flex flex-column justify-content-center align-items-center bg"
     >
       <div>
         <div className="login-top-container d-flex align-items-center justify-content-start">
-          <div className="login-title d-flex mb-3">
+          <div className="login-title d-flex mb-3 mt-5 text-white">
             <h4>Linked</h4>
             <i className="fab fa-linkedin ml-1"></i>
           </div>
