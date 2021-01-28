@@ -5,6 +5,7 @@ import EditModal from "../../components/EditModal";
 import ExperienceItem from "../../components/ExperienceItem";
 import ExpEducationLoaders from "../../components/loaders/ExpEducationLoaders";
 import { withRouter } from "react-router-dom";
+import { deleteFunction, getFunction, postFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
 
 class Experience extends Component {
   state = {
@@ -15,49 +16,49 @@ class Experience extends Component {
     loaded: false,
   };
 
-  getExperienceFetcher = async () => {
-    let url = "https://striveschool-api.herokuapp.com/api/profile/" + this.props.userID + "/experiences";
-    try {
-      const response = await fetch(url, {
-        headers: new Headers({
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        const result = await response.json();
-        this.setState({ experiences: result, loaded: true });
-      } else {
-        console.log(response);
-        this.setState({ loaded: true });
-      }
-    } catch (e) {
-      console.log(e);
-      this.setState({ loaded: true });
+
+
+  getExperience = async ()  => {
+    const experience= await getFunction("profiles/"+this.props.userName+"/experience");
+    if (experience) {
+      setTimeout(() => {
+      this.setState({ experiences: experience, loaded: true });
+    }, 2000);
+   } else {
+      console.log(experience);
     }
-  };
+};
+
   componentDidMount = () => {
     setTimeout(() => {
-      this.getExperienceFetcher();
+      this.getExperience();
     }, 1000);
   };
   componentDidUpdate = (prevProps) => {
-    prevProps.userID !== this.props.userID && this.getExperienceFetcher() && this.setState({ loaded: false });
+    prevProps.userID !== this.props.userID && this.getExperience() && this.setState({ loaded: false });
   };
-  editExperiencePut = async (experiences) => {
+
+
+  putData = async (experiences) => {
     this.setState({ editShow: false });
+    experiences !== undefined && experiences.preventDefault();
+      const response = await putFunction( this.props.userName+"experience/"+this.props.expId)
+      if (response) {
+        this.getExperience();
+        experiences.text = " ";
+      } else {
+        console.log(response);
+      }
+    
+  };
+
+  postData = async () => {
+    this.setState({ addShow: false });
+    let data = { ...this.state.currentexperience, expId: this.props.expId};
+    const response = await postFunction(this.props.userName+"/experience", data)
     try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/5fc4c5e0ed266800170ea3dc/experiences/" + experiences._id, {
-        method: "PUT",
-        body: JSON.stringify(experiences),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
       if (response.ok) {
-        this.getExperienceFetcher();
+        this.getExperience();
       } else {
         console.log(response);
       }
@@ -66,44 +67,14 @@ class Experience extends Component {
     }
   };
 
-  addExperiencePost = async (exp) => {
-    this.setState({ addShow: false });
-    try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/5fc4c5e0ed266800170ea3dc/experiences", {
-        method: "POST",
-        body: JSON.stringify(exp),
-        headers: new Headers({
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
-      });
-      if (response.ok) {
-        this.getExperienceFetcher();
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  deleteExperience = async (id) => {
+
+  deletePost = async (id) => {
     this.setState({ editShow: false });
-    try {
-      const response = await fetch("https://striveschool-api.herokuapp.com/api/profile/5fc4c5e0ed266800170ea3dc/experiences/" + id, {
-        method: "DELETE",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
-      if (response.ok) {
-        this.getExperienceFetcher();
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
+    const response = await deleteFunction("profiles/"+this.props.userName+"/experience" + id);
+    if (response) {
+      this.getPosts();
+    } else {
+      console.log(response);
     }
   };
 
