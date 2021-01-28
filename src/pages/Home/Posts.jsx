@@ -66,7 +66,8 @@ class Posts extends React.Component {
     if (response) {
       let currentState = { ...this.states };
       currentState.CommentsPost = response.comment;
-      currentState.numberComments = currentState.CommentsPost;
+      currentState.numberComments = response.total;
+      console.log(currentState);
       this.setState(currentState);
     }
   };
