@@ -48,7 +48,7 @@ class FeedMiddle extends React.Component {
           next: response.links && response.links.next ? response.links.next.split("?")[1] : "",
           loadingPosts: true,
         });
-      }, 2000);
+      }, 10);
     } else {
       console.log(response);
     }
@@ -63,7 +63,7 @@ class FeedMiddle extends React.Component {
       this.state.currentPost.text === " " && this.state.startPostModal && this.setState({ openPhotoFromPost: true });
       setTimeout(() => {
         this.getPosts();
-      }, 1000);
+      }, 10);
     } else {
       console.log(response);
     }
@@ -71,13 +71,14 @@ class FeedMiddle extends React.Component {
   //----------------------------POST IMAGE TYPE
 
   imagePost = async (id, file) => {
+    this.setState({ loadingPosts: false });
     let formData = new FormData();
     formData.append("image", file);
     const response = await postFunctionImage("post/" + id + "/upload", formData);
     if (response) {
       this.state.currentPost.text === " "
         ? this.setState({ openPhotoFromPost: true, currentPostId: response._id, postImage: { post: "" }, inputImage: [] })
-        : this.setState({ currentPost: { text: " " }, postingCurrentId: "" });
+        : this.setState({ currentPost: { text: " " }, postingCurrentId: "", loadingPosts: true });
       setTimeout(() => {
         this.getPosts("offset=0&limit=5");
       }, 1000);
@@ -88,13 +89,14 @@ class FeedMiddle extends React.Component {
   //-----------------------------EDIT EXSISTING POST
   putData = async (event) => {
     event !== undefined && event.preventDefault();
+    this.setState({ loadingPosts: false });
     let { currentPost, currentPostId } = this.state;
     const response = await putFunction("post/" + currentPostId, currentPost);
     if (response) {
-      this.getPosts();
       currentPost.text = " ";
       currentPostId = "";
       this.setState({ currentPost, currentPostId, editModal: false });
+      this.getPosts();
     } else {
       console.log(response);
     }
@@ -151,7 +153,7 @@ class FeedMiddle extends React.Component {
     const currentstate = { ...this.state };
     currentstate[item + "Modal"] = !currentstate[item + "Modal"];
     currentstate.inputImage = [];
-    currentstate.currentPost = { text: "" };
+    currentstate.currentPost = { text: " " };
     this.setState(currentstate);
   };
   render() {
