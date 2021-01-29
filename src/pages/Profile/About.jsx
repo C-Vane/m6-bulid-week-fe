@@ -7,7 +7,7 @@ function About({ aboutData, isFinishedLoading }) {
     <div id='about-container'>
       <h4 className='font-weight-normal d-block'>About</h4>
       {isFinishedLoading ? (
-        aboutData.length !== 0 ? (
+        aboutData ? (
           <p className='mb-0'>{aboutData}</p>
         ) : (
           <Alert variant='light' className='pl-0'>

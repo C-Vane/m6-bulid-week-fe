@@ -150,7 +150,7 @@ class NavBar extends React.Component {
                           </div>
                         </div>
                         <div className='mt-3' style={{ height: 28 }}>
-                          <Link to={"/profile/" + this.state.userName}>
+                          <Link to={"/profile/" + this.props.userName}>
                             <Button variant='outline-primary' className='rounded-pill'>
                               View Profile
                             </Button>
