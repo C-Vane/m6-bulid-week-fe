@@ -9,7 +9,7 @@ export default class Main extends Component {
   render() {
     return (
       <div>
-        <Experience userName={this.props.userName} />
+        <Experience userName={this.props.userName} loggedUser={this.props.loggedUser} />
         <Education />
         <Skills />
         <Interests />

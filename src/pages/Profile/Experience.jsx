@@ -16,18 +16,17 @@ class Experience extends Component {
     loaded: false,
   };
 
-
-
-  getExperience = async ()  => {
-    const experience= await getFunction("profiles/"+this.props.userName+"/experience");
+  getExperience = async () => {
+    const experience = await getFunction("profiles/" + this.props.userName + "/experience");
+    console.log(experience);
     if (experience) {
       setTimeout(() => {
-      this.setState({ experiences: experience, loaded: true });
-    }, 2000);
-   } else {
+        this.setState({ experiences: experience, loaded: true });
+      }, 2000);
+    } else {
       console.log(experience);
     }
-};
+  };
 
   componentDidMount = () => {
     setTimeout(() => {
@@ -38,39 +37,33 @@ class Experience extends Component {
     prevProps.userID !== this.props.userID && this.getExperience() && this.setState({ loaded: false });
   };
 
-
-  putData = async (experiences) => {
-    this.setState({ editShow: false });
-    experiences !== undefined && experiences.preventDefault();
-      const response = await putFunction( this.props.userName+"experience/"+this.props.expId)
-      if (response) {
-        this.getExperience();
-        experiences.text = " ";
-      } else {
-        console.log(response);
-      }
-    
+  putData = async (e) => {
+    this.setState({});
+    e !== undefined && e.preventDefault();
+    const response = await putFunction("profiles/" + this.props.userName + "experience/" + this.props.expId, this.state.currentexperience);
+    if (response) {
+      this.getExperience();
+      this.setState({ currentexperience: {}, editShow: false });
+    } else {
+      console.log(response);
+    }
   };
 
   postData = async () => {
     this.setState({ addShow: false });
-    let data = { ...this.state.currentexperience, expId: this.props.expId};
-    const response = await postFunction(this.props.userName+"/experience", data)
-    try {
-      if (response.ok) {
-        this.getExperience();
-      } else {
-        console.log(response);
-      }
-    } catch (e) {
-      console.log(e);
+    let data = { ...this.state.currentexperience };
+    const response = await postFunction("profiles/" + this.props.userName + "/experience", data);
+
+    if (response.ok) {
+      this.getExperience();
+    } else {
+      console.log(response);
     }
   };
 
-
-  deletePost = async (id) => {
+  deleteExperience = async (id) => {
     this.setState({ editShow: false });
-    const response = await deleteFunction("profiles/"+this.props.userName+"/experience" + id);
+    const response = await deleteFunction("profiles/" + this.props.userName + "/experience" + id);
     if (response) {
       this.getPosts();
     } else {
@@ -92,14 +85,24 @@ class Experience extends Component {
         <div id='experience-main-container' className='experience-contain mb-0'>
           <div className='d-flex align-items-center justify-content-between mr-2'>
             <h4 className='font-weight-normal'>Experience</h4>
-            <div className={pathname === "/profile/5fc4c48fed266800170ea3d8" ? "" : " userOnly"} onClick={() => this.addModalToggleHandler()} style={{ cursor: "pointer" }}>
+            <div className={pathname === "/profile/" + this.props.loggedUser ? "" : " userOnly"} onClick={() => this.addModalToggleHandler()} style={{ cursor: "pointer" }}>
               <i className='fas fa-plus'></i>
             </div>
           </div>
           <ListGroup>
             {this.state.loaded
               ? this.state.experiences.length > 0 &&
-                this.state.experiences.map((exp, key) => <ExperienceItem key={key} experience={exp} editModal={this.editModalToggleHandler} userID={this.props.userID} />)
+                this.state.experiences.map((exp, key) => (
+                  <ExperienceItem
+                    key={key}
+                    experience={exp}
+                    editModal={this.editModalToggleHandler}
+                    userID={this.props.userID}
+                    loggedUser={this.props.loggedUser}
+                    getExperience={this.getExperience}
+                    userName={this.props.userName}
+                  />
+                ))
               : Array.from({ length: 4 }, (_, i) => i + 1).map((n) => <ExpEducationLoaders key={n} />)}
           </ListGroup>
         </div>
@@ -111,7 +114,7 @@ class Experience extends Component {
             deleteExperience={this.deleteExperience}
             editModalToggleHandler={() => this.editModalToggleHandler()}
             experience={this.state.currentexperience}
-            editExperiencePut={this.editExperiencePut}
+            editExperiencePut={this.putData}
           />
         )}
       </div>
