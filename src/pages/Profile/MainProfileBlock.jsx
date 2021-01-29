@@ -212,7 +212,7 @@ function MainProfileBlock(props) {
                           </li>
                           <li>
                             <a onClick={savePDF}>
-                              <i className='fas fa-download mr-4'></i>Save to PDF
+                              <i className='fas fa-download mr-4'></i>Save Profile as PDF
                             </a>
                           </li>
                           <li>
