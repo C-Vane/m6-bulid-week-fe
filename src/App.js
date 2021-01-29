@@ -39,9 +39,9 @@ function App() {
     }
   };
 
-  // React.useEffect(() => {
-  //   fetchUserDataHandler(currentUserID);
-  // }, []);
+  React.useEffect(() => {
+    fetchUserDataHandler(currentUserID);
+  }, []);
 
   return (
     <Router>
