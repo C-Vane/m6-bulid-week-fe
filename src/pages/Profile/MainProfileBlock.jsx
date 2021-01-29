@@ -8,7 +8,7 @@ import About from "./About";
 import MyLoader from "../../components/loaders/ContentLoader";
 import ImageUploader from "react-images-upload";
 import { withRouter } from "react-router-dom";
-import { getFunction, postFunctionImage } from "../../components/CRUDFunctions";
+import { deleteFunction, getFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
 import EditProfile from "../../components/EditModalProfile";
 
 function MainProfileBlock(props) {
@@ -24,7 +24,9 @@ function MainProfileBlock(props) {
   const [deleteModal, setDeleteModal] = React.useState(false);
 
   const fetchUserDataHandler = async (userName) => {
-    const user = await getFunction("profile/" + userName);
+    const endp = userName === props.loggedInUser ? "profile/user/u" : "profile/" + userName;
+    const user = await getFunction(endp);
+
     if (user._id) {
       setUserData(user);
       setIsFinishedLoading(true);
@@ -61,8 +63,28 @@ function MainProfileBlock(props) {
   const profilePictureUploadHandler = (picture) => {
     setProfilePictureUploadImg({ pictures: picture });
   };
-  const deleteAcc = async (id) => {};
-  const editprofilePut = async (id, data) => {};
+  const deleteAcc = async (id) => {
+    const response = await deleteFunction("profile/" + id);
+    if (response.ok) {
+      setEditModal(false);
+      localStorage.clear();
+      window.location.replace("/");
+    } else {
+      console.log(response);
+    }
+  };
+
+  const editprofilePut = async (profile) => {
+    const response = await putFunction("profile/" + profile._id, profile);
+    console.log(profile);
+    if (response) {
+      setUserData(response);
+      setEditModal(false);
+    } else {
+      console.log(response);
+    }
+  };
+
   React.useEffect(() => {
     setCurrentUserName(props.userName);
     fetchUserDataHandler(currentUserName);
@@ -186,7 +208,7 @@ function MainProfileBlock(props) {
                             </a>
                           </li>
                           <li>
-                            <a href='#!' onClick={savePDF}>
+                            <a onClick={savePDF}>
                               <i className='fas fa-download mr-4'></i>Save to PDF
                             </a>
                           </li>
@@ -206,7 +228,7 @@ function MainProfileBlock(props) {
                           ) : (
                             <>
                               <li>
-                                <a href='' onClick={() => setEditModal(true)}>
+                                <a href='#!' onClick={() => setEditModal(true)}>
                                   <i className='fas fa-pen mr-4'></i>Edit
                                 </a>
                               </li>
@@ -261,7 +283,7 @@ function MainProfileBlock(props) {
             </Button>
           </Modal.Footer>
         </Modal>
-        {editModal && <EditProfile show={true} profile={userData} editprofilePut={editprofilePut} editModalToggleHandler={() => setEditModal(false)} />}
+        {editModal && <EditProfile show={true} profile={userData} editprofilePut={editprofilePut} deleteprofile={deleteAcc} editModalToggleHandler={() => setEditModal(false)} />}
       </div>
     </>
   );

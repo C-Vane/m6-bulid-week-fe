@@ -32,13 +32,25 @@ class EditProfile extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <Form.Group>
-              <Form.Label>Title*</Form.Label>
-              <Form.Control type='text' id='role' value={this.state.profile.role} onChange={this.handelChange} />
+              <Form.Label>Name*</Form.Label>
+              <Form.Control type='text' id='name' value={this.state.profile.name} onChange={this.handelChange} required />
             </Form.Group>
 
             <Form.Group>
-              <Form.Label>Company*</Form.Label>
-              <Form.Control type='text' id='company' value={this.state.profile.company} onChange={this.handelChange} />
+              <Form.Label>Surname*</Form.Label>
+              <Form.Control type='text' id='surname' value={this.state.profile.surname} onChange={this.handelChange} required />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Title</Form.Label>
+              <Form.Control type='text' id='title' value={this.state.profile.title} onChange={this.handelChange} />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Email*</Form.Label>
+              <Form.Control type='email' id='email' value={this.state.profile.email} onChange={this.handelChange} required />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>About</Form.Label>
+              <Form.Control as='textarea' type='text' row='3' id='bio' value={this.state.profile.bio} onChange={this.handelChange} />
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>

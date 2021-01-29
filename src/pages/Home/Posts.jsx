@@ -49,14 +49,16 @@ class Posts extends React.Component {
   };
   getReactions = async () => {
     let response = await getFunction("post/" + this.props.data._id);
-    if (response) {
-      let currentState = { ...this.states };
-      currentState.AllReactions = response.reactions;
-      currentState.numberLikes = currentState.AllReactions.length;
-      let userReaction = response.reactions.filter((reaction) => reaction.user._id === this.props.userID);
-      currentState.liked = userReaction.length > 0 && [true, userReaction[0]._id];
-      currentState.liked[0] && this.likeButton(userReaction[0].reaction);
-      this.setState(currentState);
+    if (response.reaction) {
+      if (response.reactions.length > 0) {
+        let currentState = { ...this.states };
+        currentState.AllReactions = response.reactions;
+        currentState.numberLikes = currentState.AllReactions.length;
+        let userReaction = response.reactions.filter((reaction) => reaction.user._id === this.props.userID);
+        currentState.liked = userReaction.length > 0 && [true, userReaction[0]._id];
+        currentState.liked[0] && this.likeButton(userReaction[0].reaction);
+        this.setState(currentState);
+      }
     } else {
       console.log(response);
     }

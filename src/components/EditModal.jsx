@@ -23,7 +23,7 @@ class EditModal extends React.Component {
     this.setState({ experience });
   };
   handelSave = (event) => {
-    event.event.preventDefault();
+    event.preventDefault();
     this.props.editExperiencePut(this.state.experience);
   };
   componentDidUpdate = (prevProps) => {

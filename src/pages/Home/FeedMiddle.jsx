@@ -40,11 +40,12 @@ class FeedMiddle extends React.Component {
   getPosts = async (query) => {
     const endp = query ? "post?" + query : "post";
     const response = await getFunction(endp);
+    console.log(response);
     if (response) {
       setTimeout(() => {
         this.setState({
           posts: query ? [...this.state.posts, ...response.posts] : response.posts,
-          next: response.link && response.links.next ? response.links.next.split("?")[1] : "",
+          next: response.links && response.links.next ? response.links.next.split("?")[1] : "",
           loadingPosts: true,
         });
       }, 2000);
@@ -197,7 +198,7 @@ class FeedMiddle extends React.Component {
         {startPostModal && <StartPost show={true} name={name} userID={userID} onHide={this.toggleModal} sendPosts={this.sendPosts} inputImage={inputImage != null && inputImage} />}
         <InfiniteScroll
           pageStart={0}
-          hasMore={next.length > 0}
+          hasMore={next}
           loadMore={() => this.getPosts(next)}
           loader={
             <Card className='d-flex justify-content-center mt-2 align-content-center'>
