@@ -16,6 +16,31 @@ export const getFunction = async (endp) => {
     console.log(error);
   }
 };
+
+export const getDocument = async (endp, name) => {
+  try {
+    const response = await fetch(url + endp, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", name);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      return await true;
+    } else {
+      console.log(response);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const postFunctionImage = async (endp, data) => {
   try {
     const response = await fetch(url + endp, {

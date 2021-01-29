@@ -8,7 +8,7 @@ import About from "./About";
 import MyLoader from "../../components/loaders/ContentLoader";
 import ImageUploader from "react-images-upload";
 import { withRouter } from "react-router-dom";
-import { deleteFunction, getFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
+import { deleteFunction, getDocument, getFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
 import EditProfile from "../../components/EditModalProfile";
 
 function MainProfileBlock(props) {
@@ -24,7 +24,7 @@ function MainProfileBlock(props) {
   const [deleteModal, setDeleteModal] = React.useState(false);
 
   const fetchUserDataHandler = async (userName) => {
-    const endp = userName === props.loggedInUser ? "profile/user/u" : "profile/" + userName;
+    const endp = userName === props.loggedInUser.split("#")[0] ? "profile/user/u" : "profile/" + userName;
     const user = await getFunction(endp);
 
     if (user._id) {
@@ -52,10 +52,13 @@ function MainProfileBlock(props) {
     }
   };
   const savePDF = async () => {
-    const data = await getFunction("profile/" + userData._id + "/CV");
+    const data = await getDocument("profile/" + userData._id + "/CV", "CV.pdf");
     console.log(data);
   };
-
+  const saveCSV = async () => {
+    const data = await getDocument("profiles/" + currentUserName + "/experiences/CSV", "Experinece.PDF");
+    console.log(data);
+  };
   const moreMenuHandler = () => {
     setIsMoreClicked(!isMoreClicked);
   };
@@ -210,6 +213,11 @@ function MainProfileBlock(props) {
                           <li>
                             <a onClick={savePDF}>
                               <i className='fas fa-download mr-4'></i>Save to PDF
+                            </a>
+                          </li>
+                          <li>
+                            <a onClick={saveCSV}>
+                              <i className='fas fa-download mr-4'></i>Save Experiences as CSV
                             </a>
                           </li>
                           {props.loggedInUser !== currentUserName ? (
