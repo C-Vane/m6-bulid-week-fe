@@ -2,6 +2,7 @@ const url = process.env.REACT_APP_BE_URL;
 
 export const getFunction = async (endp) => {
   try {
+    console.log(localStorage.getItem("token"));
     const response = await fetch(url + endp, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
