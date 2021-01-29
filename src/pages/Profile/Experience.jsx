@@ -36,35 +36,30 @@ class Experience extends Component {
     prevProps.userID !== this.props.userID && this.getExperience() && this.setState({ loaded: false });
   };
 
-  putData = async (e) => {
-    this.setState({});
-    e !== undefined && e.preventDefault();
-    const response = await putFunction("profiles/" + this.props.userName + "experience/" + this.props.expId, this.state.currentexperience);
-    if (response) {
+  putData = async (data) => {
+    this.setState({ loaded: false });
+    const response = await putFunction("profiles/" + this.props.userName + "/experience/" + this.state.currentexperience._id, data);
+    console.log(response);
+    if (response._id) {
       this.getExperience();
       this.setState({ currentexperience: {}, editShow: false });
     } else {
       console.log(response);
     }
   };
-
-  postData = async () => {
-    this.setState({ addShow: false });
-    let data = { ...this.state.currentexperience };
-    const response = await postFunction("profiles/" + this.props.userName + "/experience", data);
-
-    if (response.ok) {
+  addExperiencePost = async (data) => {
+    const post = await postFunction("profiles/" + this.props.userName + "/experience", data);
+    if (post._id) {
       this.getExperience();
-    } else {
-      console.log(response);
+      this.setState({ addShow: false });
     }
   };
 
   deleteExperience = async (id) => {
-    this.setState({ editShow: false });
-    const response = await deleteFunction("profiles/" + this.props.userName + "/experience" + id);
+    const response = await deleteFunction("profiles/" + this.props.userName + "/experience/" + id);
     if (response) {
-      this.getPosts();
+      this.getExperience();
+      this.setState({ editShow: false });
     } else {
       console.log(response);
     }
