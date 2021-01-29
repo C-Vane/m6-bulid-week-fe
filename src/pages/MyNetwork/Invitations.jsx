@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Invitations.css";
 import InvitationsLoader from "../../components/loaders/InvitationsLoader";
+import { getFunction } from "../../components/CRUDFunctions";
 
 export default class Invitations extends Component {
   state = {
@@ -12,25 +13,15 @@ export default class Invitations extends Component {
   };
 
   getInfo = async () => {
-    try {
-      const res = await fetch("https://striveschool-api.herokuapp.com/api/profile/ ", {
-        method: "GET",
-        headers: new Headers({
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        }),
+    const info = await getFunction("profile/");
+
+    if (info) {
+      this.setState({
+        myInfo: info,
+        myInfoSpliced: info.splice(0, info.length > 6 ? 6 : info.length - 1),
       });
-      if (res.ok) {
-        const info = await res.json();
-        this.setState({
-          myInfo: info,
-          myInfoSpliced: info.splice(0, 6),
-        });
-      } else {
-        console.log("error occured");
-      }
-    } catch (e) {
-      console.log(e);
+    } else {
+      console.log("error occured");
     }
   };
 
@@ -89,7 +80,6 @@ export default class Invitations extends Component {
                     </div>
                   );
                 } else {
-                  console.log("b");
                   return (
                     <div key={index} className={this.state.showMore ? "d-flex justify-content-between brdr-top py-2 my-2" : "d-none"}>
                       <div className='d-flex myLink'>
@@ -110,7 +100,7 @@ export default class Invitations extends Component {
                         </div>
                       </div>
                       <div className='d-flex'>
-                        <button className='ignore mr-1 d-flex justify-content-center align-items-center'>Ignore</button>
+                        <button className='ignore mr-1 d-flex justify-content-center align-items-center'> Ignore</button>
                         <button id='accept' className='d-flex justify-content-center align-items-center mr-3'>
                           Accept
                         </button>
