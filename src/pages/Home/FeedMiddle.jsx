@@ -48,7 +48,7 @@ class FeedMiddle extends React.Component {
           next: response.links && response.links.next ? response.links.next.split("?")[1] : "",
           loadingPosts: true,
         });
-      }, 10);
+      }, 1000);
     } else {
       console.log(response);
     }
