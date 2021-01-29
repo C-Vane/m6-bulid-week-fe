@@ -83,6 +83,7 @@ class Posts extends React.Component {
     const response = await postFunction("post/reaction/" + this.props.data._id, Reaction);
     if (response._id) {
       this.getReactions();
+      this.setState({ numberLikes: response.reactions });
     } else {
       console.log(response);
     }

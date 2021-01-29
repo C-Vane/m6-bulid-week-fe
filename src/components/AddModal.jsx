@@ -12,6 +12,7 @@ class AddModal extends React.Component {
       endDate: "",
       description: "",
     },
+    checked: false,
   };
 
   handelChange = (e) => {
@@ -33,7 +34,7 @@ class AddModal extends React.Component {
 
   render() {
     return (
-      <Modal show={this.state.show} id="addModal" onHide={() => this.props.addModalToggleHandler()}>
+      <Modal show={this.state.show} id='addModal' onHide={() => this.props.addModalToggleHandler()}>
         <Form onSubmit={this.handelSave}>
           <Modal.Header closeButton onClick={() => this.props.addModalToggleHandler()}>
             <Modal.Title>Add Experience</Modal.Title>
@@ -41,18 +42,11 @@ class AddModal extends React.Component {
           <Modal.Body>
             <Form.Group>
               <Form.Label>Title*</Form.Label>
-              <Form.Control
-                type="text"
-                id="role"
-                placeholder="Ex. Retail Sales Manager"
-                value={this.state.experience.role}
-                onChange={this.handelChange}
-                required
-              />
+              <Form.Control type='text' id='role' placeholder='Ex. Retail Sales Manager' value={this.state.experience.role} onChange={this.handelChange} required />
             </Form.Group>
             <Form.Group>
               <Form.Label>Employment type</Form.Label>
-              <Form.Control as="select">
+              <Form.Control as='select'>
                 <option>-</option>
                 <option>Full-time</option>
                 <option>Part-time</option>
@@ -62,69 +56,38 @@ class AddModal extends React.Component {
                 <option>Internship</option>
               </Form.Control>
             </Form.Group>
-            <a>Learn more</a>
             <Form.Group>
               <Form.Label>Company*</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ex: Microsoft"
-                id="company"
-                value={this.state.experience.company}
-                onChange={this.handelChange}
-                required
-              />
+              <Form.Control type='text' placeholder='Ex: Microsoft' id='company' value={this.state.experience.company} onChange={this.handelChange} required />
             </Form.Group>
             <Form.Group>
               <Form.Label>Location</Form.Label>
-              <Form.Control
-                type="text"
-                id="area"
-                placeholder="Ex: London, United Kingdom"
-                value={this.state.experience.area}
-                onChange={this.handelChange}
-                required
-              />
+              <Form.Control type='text' id='area' placeholder='Ex: London, United Kingdom' value={this.state.experience.area} onChange={this.handelChange} required />
             </Form.Group>
             <Form.Group>
-              <Form.Check type="checkbox" label="I am currently working in this role" />
+              <Form.Check type='checkbox' label='I am currently working in this role' checked={this.state.checked} onChange={() => this.setState({ checked: !this.state.checked })} />
             </Form.Group>
             <Form.Group>
               <Form.Label>Start Date*</Form.Label>
-              <Form.Control
-                type="date"
-                id="startDate"
-                value={this.state.experience.startDate}
-                onChange={this.handelChange}
-                required
-              />
+              <Form.Control type='date' id='startDate' value={this.state.experience.startDate} onChange={this.handelChange} required />
+            </Form.Group>
+            {!this.state.checked && (
+              <Form.Group>
+                <Form.Label>End Date*</Form.Label>
+                <Form.Control type='date' id='endDate' value={this.state.experience.endDate} onChange={this.handelChange} />
+              </Form.Group>
+            )}
+            <Form.Group>
+              <Form.Check type='checkbox' label='Update my industry' />
             </Form.Group>
             <Form.Group>
-              <Form.Label>End Date*</Form.Label>
-              <Form.Control
-                type="date"
-                id="endDate"
-                value={this.state.experience.endDate}
-                onChange={this.handelChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Check type="checkbox" label="Update my industry" />
-            </Form.Group>
-            <Form.Group>
-              <Form.Check type="checkbox" label="Update my headline" />
+              <Form.Check type='checkbox' label='Update my headline' />
             </Form.Group>
             <Form.Group>
               <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                id="description"
-                value={this.state.experience.description}
-                onChange={this.handelChange}
-                required
-              />
+              <Form.Control as='textarea' rows={3} id='description' value={this.state.experience.description} onChange={this.handelChange} required />
             </Form.Group>
-            <small>Media</small>
+            {/*  <small>Media</small>
             <small>Add or link to external documents, photos, sites, videos, and presentations.</small>
             <Row className=" justify-content-around">
               <Col>
@@ -138,19 +101,16 @@ class AddModal extends React.Component {
                 </Button>
               </Col>
             </Row>
-            <a>Supported formats</a>
+            <a>Supported formats</a> */}
           </Modal.Body>
 
           <Modal.Footer>
-            <Row className="share">
+            <Row className='share'>
               <Form.Group>
-                <Form.Check
-                  type="checkbox"
-                  label="If enabled, your network may be informed of job changes, education changes, and work anniversaries. Learn how these are shared and when"
-                />
+                <Form.Check type='checkbox' label='If enabled, your network may be informed of job changes, education changes, and work anniversaries. Learn how these are shared and when' />
               </Form.Group>
             </Row>
-            <Button variant="primary" className="rounded-pill" type="submit">
+            <Button variant='primary' className='rounded-pill' type='submit'>
               Save
             </Button>
           </Modal.Footer>

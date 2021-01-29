@@ -42,7 +42,6 @@ export const getDocument = async (endp, name) => {
   }
 };
 export const postFunctionImage = async (endp, data) => {
-  console.log(endp);
   try {
     const response = await fetch(url + endp, {
       method: "POST",

@@ -118,7 +118,8 @@ class FeedMiddle extends React.Component {
   sendPosts = async (data, inputImage, item) => {
     this.state.photoModal && (await this.postData());
     this.toggleModal(item);
-    let { currentPost } = this.state;
+    let { currentPost, currentPostId, postImage } = this.state;
+    console.log(currentPostId);
     if (this.state.openPhotoFromPost && item === "photo") {
       let postImage = data;
       this.setState({ inputImage });
@@ -126,12 +127,10 @@ class FeedMiddle extends React.Component {
     } else if (this.state.openPhotoFromPost && item === "startPost") {
       currentPost.text = data;
       this.setState({ currentPost });
-      let { currentPostId, postImage } = this.state;
       this.putData();
       this.imagePost(currentPostId, postImage);
     } else if (!this.state.openPhotoFromPost && item === "photo") {
       let postImage = data;
-      let { currentPostId } = this.state;
       this.imagePost(currentPostId, postImage);
     } else {
       currentPost.text = data;

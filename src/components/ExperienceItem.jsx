@@ -80,7 +80,7 @@ const ExperienceItem = (props) => {
             <h5 className='mb-0 font-weight-normal'>{props.experience.role}</h5>
             <p className='mb-0 '>{props.experience.company}</p>
             <p className='mb-0 font-weight-light'>
-              <Moment format='MMM YYYY'>{props.experience.startDate}</Moment> - <Moment format='MMM YYYY'>{props.experience.endDate}</Moment>
+              <Moment format='MMM YYYY'>{props.experience.startDate}</Moment> -{props.experience.endDate ? <Moment format='MMM YYYY'>{props.experience.endDate}</Moment> : <span>Present</span>}
             </p>
             <small className='font-weight-light'>{props.experience.area}</small>
           </div>
