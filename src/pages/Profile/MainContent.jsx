@@ -6,23 +6,19 @@ import { Container, Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 function MainContent(props) {
-  let { id } = useParams();
-  const [currentUserID, setCurrentUserID] = React.useState(id);
+  let { userName } = useParams();
+  const [currentUserName, setCurrentUserName] = React.useState(userName);
 
   React.useEffect(() => {
-    setCurrentUserID(id);
-  }, [id]);
+    setCurrentUserName(userName);
+  }, [userName]);
   return (
     <>
       <Container>
         <Row>
           <Col xs={8}>
-            <MainProfileBlock
-              userID={currentUserID}
-              loggedInUserID={props.loggedInUserID}
-              contactInfoHandler={props.contactInfoHandler}
-            />
-            <Main userID={currentUserID} />
+            <MainProfileBlock userName={currentUserName} loggedInUser={props.userName} contactInfoHandler={props.contactInfoHandler} />
+            <Main userName={currentUserName} loggedUser={props.userName} />
           </Col>
           <Col xs={4}>
             <SideBar />

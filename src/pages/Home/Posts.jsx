@@ -49,14 +49,16 @@ class Posts extends React.Component {
   };
   getReactions = async () => {
     let response = await getFunction("post/" + this.props.data._id);
-    if (response) {
-      let currentState = { ...this.states };
-      currentState.AllReactions = response.reactions;
-      currentState.numberLikes = currentState.AllReactions.length;
-      let userReaction = currentState.AllReactions.filter((comment) => comment.user._id === this.props.userID);
-      currentState.liked = userReaction.length > 0 && [true, userReaction[0]._id];
-      currentState.liked[0] && this.likeButton(userReaction[0].reaction);
-      this.setState(currentState);
+    if (response.reaction) {
+      if (response.reactions.length > 0) {
+        let currentState = { ...this.states };
+        currentState.AllReactions = response.reactions;
+        currentState.numberLikes = currentState.AllReactions.length;
+        let userReaction = response.reactions.filter((reaction) => reaction.user._id === this.props.userID);
+        currentState.liked = userReaction.length > 0 && [true, userReaction[0]._id];
+        currentState.liked[0] && this.likeButton(userReaction[0].reaction);
+        this.setState(currentState);
+      }
     } else {
       console.log(response);
     }
@@ -128,10 +130,10 @@ class Posts extends React.Component {
     }
   };
   render() {
-    let { image, user, text, createdAt, updatedAt, _id, reactions } = this.props.data;
+    let { image, user, text, createdAt, updatedAt, _id } = this.props.data;
     let { deletePost, editPost, userID, userName, profilePicture } = this.props;
     let { name, surname, title } = user;
-    let { comments, deletePosts, reactionsModal, AllReactions, numberComments, color, icon, word, CommentsPost, liked, next } = this.state;
+    let { comments, numberLikes, reactionsModal, AllReactions, numberComments, color, icon, word, CommentsPost, liked, next } = this.state;
     return (
       <Card className='mt-2 posts'>
         <Row className='justify-content-start m-2'>
@@ -167,7 +169,7 @@ class Posts extends React.Component {
 
           <Col className='d-flex flex-column'>
             <Row>
-              <Link to={"/profile/" + user._id} className='text-dark'>
+              <Link to={"/profile/" + user.username} className='text-dark'>
                 <h6 className='d-inline-block ml-3 mr-2 m-0 p-0 post-name-clickable'>
                   {name} {surname}
                 </h6>
@@ -197,9 +199,9 @@ class Posts extends React.Component {
           </Col>
         </Card.Body>
         <p className='border-bottom m-2 mx-3 pb-3' onClick={this.toggleReactions}>
-          {reactions > 0 && (
+          {numberLikes > 0 && (
             <>
-              <FontAwesomeIcon icon={faThumbsUp} style={{ color: "5894f5" }} /> {reactions}
+              <FontAwesomeIcon icon={faThumbsUp} style={{ color: "5894f5" }} /> {numberLikes}
             </>
           )}
           {numberComments > 0 && <> - {numberComments} Comments</>}{" "}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Button, Spinner } from "react-bootstrap";
+import { Card, Button, Spinner, Modal } from "react-bootstrap";
 import ProfilePicture from "../../assets/profilepicture.PNG";
 import Highlights from "../../components/Highlights";
 import LatestEducation from "./LatestEducation";
@@ -8,83 +8,97 @@ import About from "./About";
 import MyLoader from "../../components/loaders/ContentLoader";
 import ImageUploader from "react-images-upload";
 import { withRouter } from "react-router-dom";
+import { deleteFunction, getDocument, getFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
+import EditProfile from "../../components/EditModalProfile";
+
 function MainProfileBlock(props) {
   const [isMoreClicked, setIsMoreClicked] = React.useState(false);
   const [userData, setUserData] = React.useState({});
-  const [currentUserID, setCurrentUserID] = React.useState(props.userID);
+  const [currentUserName, setCurrentUserName] = React.useState(props.userName);
   const [isFinishedLoading, setIsFinishedLoading] = React.useState(false);
   const [showProfilePictureUpload, setShowProfilePictureUpload] = React.useState(false);
+  const [showBackgroundPictureUpload, setShowBackgroundPictureUpload] = React.useState(false);
   const [profilePictureUploadImg, setProfilePictureUploadImg] = React.useState([]);
   const [isImageUploading, setIsImageUploading] = React.useState(false);
+  const [editModal, setEditModal] = React.useState(false);
+  const [deleteModal, setDeleteModal] = React.useState(false);
 
-  const fetchUserDataHandler = async (id) => {
-    try {
-      let response = await fetch(`https://striveschool-api.herokuapp.com/api/profile/${id}`, {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
-      let data = await response.json();
-      setUserData(data);
-      setTimeout(() => {
-        setIsFinishedLoading(true);
-      }, 1000);
-    } catch (er) {
-      console.log(er);
+  const fetchUserDataHandler = async (userName) => {
+    const endp = userName === props.loggedInUser.split("#")[0] ? "profile/user/u" : "profile/" + userName;
+    const user = await getFunction(endp);
+
+    if (user._id) {
+      setUserData(user);
+      setIsFinishedLoading(true);
+    } else {
+      console.log(user);
     }
   };
 
   const postProfilePictureHandler = async () => {
     setIsImageUploading(true);
-
     let formData = new FormData();
     let blob = new Blob([profilePictureUploadImg.pictures[0]], { type: "img/jpeg" });
-    formData.append("profile", blob);
-
-    try {
-      let response = await fetch(`https://striveschool-api.herokuapp.com/api/profile/${props.loggedInUserID}/picture`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YzQ4ZmVkMjY2ODAwMTcwZWEzZDgiLCJpYXQiOjE2MDY3MzA4OTUsImV4cCI6MTYwNzk0MDQ5NX0.Qzj6OQCKSyxDgEgIadVbBI70XPPAgDlcGoWJEKyM6cU",
-        },
-      });
+    formData.append("image", blob);
+    const endp = !showBackgroundPictureUpload ? "profile/" + userData._id + "/picture" : "profile/" + userData._id + "/picture?background=true";
+    const response = await postFunctionImage(endp, formData);
+    if (response._id) {
       setTimeout(() => {
         setIsImageUploading(false);
-        setShowProfilePictureUpload(!showProfilePictureUpload);
-        fetchUserDataHandler(currentUserID);
-        window.location.reload();
+        setShowProfilePictureUpload(false);
+        setShowBackgroundPictureUpload(false);
+        setUserData(response);
       }, 1000);
-    } catch (er) {
-      console.log(er);
     }
   };
-
+  const savePDF = async () => {
+    const data = await getDocument("profile/" + userData._id + "/CV", "CV.pdf");
+    console.log(data);
+  };
+  const saveCSV = async () => {
+    const data = await getDocument("profiles/" + currentUserName + "/experiences/CSV", "Experinece.PDF");
+    console.log(data);
+  };
   const moreMenuHandler = () => {
     setIsMoreClicked(!isMoreClicked);
-  };
-
-  const showProfilePictureUploadHandler = () => {
-    setShowProfilePictureUpload(!showProfilePictureUpload);
   };
 
   const profilePictureUploadHandler = (picture) => {
     setProfilePictureUploadImg({ pictures: picture });
   };
+  const deleteAcc = async (id) => {
+    const response = await deleteFunction("profile/" + id);
+    if (response.ok) {
+      setEditModal(false);
+      localStorage.clear();
+      window.location.replace("/");
+    } else {
+      console.log(response);
+    }
+  };
+
+  const editprofilePut = async (profile) => {
+    const response = await putFunction("profile/" + profile._id, profile);
+    console.log(profile);
+    if (response) {
+      setUserData(response);
+      setEditModal(false);
+    } else {
+      console.log(response);
+    }
+  };
 
   React.useEffect(() => {
-    setCurrentUserID(props.userID);
-    fetchUserDataHandler(currentUserID);
+    setCurrentUserName(props.userName);
+    fetchUserDataHandler(currentUserName);
     setIsFinishedLoading(true);
   }, []);
 
   React.useEffect(() => {
     setIsFinishedLoading(false);
-    setCurrentUserID(props.userID);
-    fetchUserDataHandler(props.userID);
-  }, [props.userID]);
+    setCurrentUserName(props.userName);
+    fetchUserDataHandler(props.userName);
+  }, [props.userName]);
   const { pathname } = props.location;
   return (
     <>
@@ -99,9 +113,20 @@ function MainProfileBlock(props) {
             <div
               className='profile-background-picture'
               style={{
-                background: `url(${ProfilePicture})`,
+                background: `url(${userData.background})`,
               }}
             ></div>
+            {props.loggedInUser === currentUserName && (
+              <div
+                className='profile-picture-edit-btn '
+                onClick={() => {
+                  setShowBackgroundPictureUpload(true);
+                  setShowProfilePictureUpload(true);
+                }}
+              >
+                <i className='fas fa-pen'></i>
+              </div>
+            )}
           </div>
           {showProfilePictureUpload && (
             <div className='profile-picture-upload-container swing-in-top-fwd'>
@@ -124,10 +149,17 @@ function MainProfileBlock(props) {
                     onChange={profilePictureUploadHandler}
                   />
                   <div className='d-flex justify-content-end align-items-center' style={{ height: 40 }}>
-                    <Button variant='outline-secondary' className='rounded-pill mr-2' onClick={showProfilePictureUploadHandler}>
+                    <Button
+                      variant='outline-secondary'
+                      className='rounded-pill mr-2'
+                      onClick={() => {
+                        setShowBackgroundPictureUpload(false);
+                        setShowProfilePictureUpload(false);
+                      }}
+                    >
                       Cancel
                     </Button>
-                    <Button variant='primary' className='rounded-pill' style={{ width: 160 }} onClick={postProfilePictureHandler}>
+                    <Button variant='primary' className='rounded-pill' style={{ width: 160 }} onClick={() => postProfilePictureHandler()}>
                       Save Changes
                     </Button>
                   </div>
@@ -140,8 +172,8 @@ function MainProfileBlock(props) {
               <>
                 <div className='profile-left w-75'>
                   <div className='profile-photo d-flex align-items-end justify-content-center' style={{ background: `url(${userData.image})` }}>
-                    {props.loggedInUserID === currentUserID && (
-                      <div className={pathname === "/profile/5fc4c48fed266800170ea3d8" ? "profile-picture-edit-btn" : "profile-picture-edit-btn userOnly"} onClick={showProfilePictureUploadHandler}>
+                    {props.loggedInUser === currentUserName && (
+                      <div className='profile-picture-edit-btn ' onClick={() => setShowProfilePictureUpload(true)}>
                         <i className='fas fa-pen'></i>
                       </div>
                     )}
@@ -179,20 +211,42 @@ function MainProfileBlock(props) {
                             </a>
                           </li>
                           <li>
-                            <a href='#!'>
+                            <a onClick={savePDF}>
                               <i className='fas fa-download mr-4'></i>Save to PDF
                             </a>
                           </li>
                           <li>
-                            <a href='#!'>
-                              <i className='fas fa-plus mr-4'></i>Follow
+                            <a onClick={saveCSV}>
+                              <i className='fas fa-download mr-4'></i>Save Experiences as CSV
                             </a>
                           </li>
-                          <li>
-                            <a href='#!'>
-                              <i className='fas fa-flag mr-4'></i>Report/Block
-                            </a>
-                          </li>
+                          {props.loggedInUser !== currentUserName ? (
+                            <>
+                              <li>
+                                <a href='#!'>
+                                  <i className='fas fa-plus mr-4'></i>Follow
+                                </a>
+                              </li>
+                              <li>
+                                <a href='#!'>
+                                  <i className='fas fa-flag mr-4'></i>Report/Block
+                                </a>
+                              </li>
+                            </>
+                          ) : (
+                            <>
+                              <li>
+                                <a href='#!' onClick={() => setEditModal(true)}>
+                                  <i className='fas fa-pen mr-4'></i>Edit
+                                </a>
+                              </li>
+                              <li>
+                                <a href='#!' onClick={() => setDeleteModal(true)}>
+                                  <i className='fas fa-trash-alt mr-4'></i>Delete Account
+                                </a>
+                              </li>
+                            </>
+                          )}
                         </ul>
                       </div>
                     )}
@@ -212,6 +266,32 @@ function MainProfileBlock(props) {
         </Card>
         <Highlights />
         <About aboutData={userData.bio} isFinishedLoading={isFinishedLoading} />
+        <Modal show={deleteModal} onHide={() => setDeleteModal(false)}>
+          <Modal.Header closeButton onClick={() => setDeleteModal(false)}>
+            <Modal.Title>Delete Account</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Are you sure you want to delete your Account?</h4>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant='success' className='px-5' onClick={() => setDeleteModal(false)}>
+              No
+            </Button>
+            <Button
+              variant='danger'
+              className='px-5'
+              onClick={() => {
+                deleteAcc(userData._id);
+                setTimeout(() => {
+                  setDeleteModal(false);
+                }, 500);
+              }}
+            >
+              Yes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        {editModal && <EditProfile show={true} profile={userData} editprofilePut={editprofilePut} deleteprofile={deleteAcc} editModalToggleHandler={() => setEditModal(false)} />}
       </div>
     </>
   );

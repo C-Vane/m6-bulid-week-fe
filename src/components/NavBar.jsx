@@ -29,6 +29,7 @@ class NavBar extends React.Component {
     jobTitle: this.props.jobTitle,
     profilePicture: this.props.profilePicture,
     userID: this.props.userID,
+    userName: this.props.userName,
     searchInput: "",
     searchUsers: [],
     searchPosts: [],
@@ -149,7 +150,7 @@ class NavBar extends React.Component {
                           </div>
                         </div>
                         <div className='mt-3' style={{ height: 28 }}>
-                          <Link to={"/profile/" + `${this.state.userID}`}>
+                          <Link to={"/profile/" + this.props.userName}>
                             <Button variant='outline-primary' className='rounded-pill'>
                               View Profile
                             </Button>
@@ -186,8 +187,8 @@ class NavBar extends React.Component {
                         </div>
                       </Link>
                       <NavDropdown.Divider />
-                      <Link to='/signOut'>
-                        <div className={pathname === "/signOut" ? "nav-link active" : "nav-link"}>
+                      <Link to='/' onClick={() => localStorage.clear()}>
+                        <div className={pathname === "/" ? "nav-link active" : "nav-link"}>
                           <p>Sign Out</p>
                         </div>
                       </Link>
