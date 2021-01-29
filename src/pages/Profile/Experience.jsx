@@ -5,7 +5,7 @@ import EditModal from "../../components/EditModal";
 import ExperienceItem from "../../components/ExperienceItem";
 import ExpEducationLoaders from "../../components/loaders/ExpEducationLoaders";
 import { withRouter } from "react-router-dom";
-import { deleteFunction, getFunction, postFunction, postFunctionImage, putFunction } from "../../components/CRUDFunctions";
+import { getFunction, postFunction, putFunction, deleteFunction } from "../../components/CRUDFunctions";
 
 class Experience extends Component {
   state = {
@@ -18,7 +18,6 @@ class Experience extends Component {
 
   getExperience = async () => {
     const experience = await getFunction("profiles/" + this.props.userName + "/experience");
-    console.log(experience);
     if (experience) {
       setTimeout(() => {
         this.setState({ experiences: experience, loaded: true });
