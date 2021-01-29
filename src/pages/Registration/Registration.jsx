@@ -43,7 +43,7 @@ function Registration() {
     >
       <div>
         <div className="login-top-container d-flex align-items-center justify-content-start">
-          <div className="login-title d-flex mb-3 mt-5 text-white">
+          <div className="login-title d-flex mb-3 mt-5">
             <h4>Linked</h4>
             <i className="fab fa-linkedin ml-1"></i>
           </div>
