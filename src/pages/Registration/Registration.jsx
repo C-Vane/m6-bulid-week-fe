@@ -21,12 +21,14 @@ function Registration() {
       password: passwordInput,
     };
     const newUser = await postFunction("profile/", user);
-    if (newUser._id) {
+    if (newUser) {
       const token = await postFunction("profile/login", {
         user: newUser.username,
         password: newUser.password,
       });
-      token.token ? signupSuccessHandler(token.token) : setShowInputError(true);
+      if (token) {
+        token.token ? signupSuccessHandler(token.token) : setShowInputError(true);
+      }
     } else {
       if (newUser.includes("email")) {
         setErrorMsg("Email Already Used");
